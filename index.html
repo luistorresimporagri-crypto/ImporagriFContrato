@@ -4,131 +4,66 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Formulario de Contratos — Imporagri</title>
-<style>
-  :root{
-    --imp-azul:#0066A1; --imp-verde:#2E7D32;
-    --text:#0E1B2A; --muted:#5B6A7C; --error:#B00020; --ok:#1B5E20;
-    --bg:#F2F6F9; --card:rgba(255,255,255,.66); --border:#DCE6EF;
-    --radius:22px; --grid-gap:22px; --container-w:980px; --input-h:52px;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; color:var(--text);
-    font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-    background:
+  <style>
+    :root{--imp-azul:#0066A1;--imp-verde:#2E7D32;--text:#0E1B2A;--muted:#5B6A7C;--bg:#F2F6F9;--card:rgba(255,255,255,.66);--border:#DCE6EF;--radius:22px;--grid-gap:22px;--container-w:980px;--input-h:52px}
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:
       radial-gradient(1200px 600px at 10% -10%, #D6EEF9 0%, rgba(214,238,249,0) 60%),
       radial-gradient(900px 500px at 110% 10%, #DEF3E6 0%, rgba(222,243,230,0) 55%),
-      var(--bg);
-  }
-  .wrap{max-width:var(--container-w); margin:36px auto; padding:0 16px;}
-  .brand{display:flex; align-items:center; gap:12px; margin-bottom:14px}
-  .brand .dot{
-    width:14px; height:14px; border-radius:999px;
-    background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde));
-    box-shadow:0 0 0 6px rgba(0,102,161,.08);
-  }
-  h1{margin:0; font-weight:800; letter-spacing:.2px}
-
-  /* Tarjeta glass con borde degradado */
-  .card{
-    position:relative; padding:30px;
-    border-radius:var(--radius);
-    background:var(--card);
-    backdrop-filter: blur(10px);
-    border:1px solid rgba(255,255,255,.5);
-    box-shadow:
-      0 12px 28px rgba(0,0,0,.06),
-      inset 0 0 0 1.5px rgba(255,255,255,.35);
-  }
-  .card:before{
-    content:""; position:absolute; inset:-1px;
-    border-radius:inherit; pointer-events:none;
-    background:
-      linear-gradient(135deg, rgba(0,102,161,.35), rgba(46,125,50,.35));
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    padding:1px; -webkit-mask-composite: xor; mask-composite: exclude;
-    border-radius:inherit;
-  }
-
-  /* Secciones aireadas */
-  .section{
-    border-radius:18px;
-    padding:20px 18px 14px;
-    background:rgba(255,255,255,.65);
-    border:1px solid rgba(255,255,255,.6);
-    box-shadow:0 8px 18px rgba(16,24,40,.06);
-  }
-  .section + .section{margin-top:18px}
-  .section h3{
-    margin:0 0 14px 0; font-size:17px; color:#0A3550; letter-spacing:.2px;
-  }
-
-  .grid{display:grid; gap:var(--grid-gap); grid-template-columns:1fr 1fr;}
-  @media (max-width:980px){ .grid{grid-template-columns:1fr;} }
-
-  label{font-weight:700; font-size:13px; color:#12344D; letter-spacing:.35px}
-  .req{color:var(--imp-azul); margin-left:6px}
-  input[type="text"], input[type="email"], select{
-    width:100%; height:var(--input-h); padding:0 14px; border-radius:14px; outline:none;
-    border:1px solid var(--border); background:rgba(255,255,255,.9);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-    transition:border-color .15s, box-shadow .15s, transform .02s;
-  }
-  input:focus, select:focus{
-    border-color:#5FB1D8;
-    box-shadow:0 0 0 4px rgba(95,177,216,.18);
-  }
-  input[readonly]{background:rgba(248,251,253,.8); color:#3A4A5A}
-  input::placeholder{color:#9AA8B6}
-  small{color:var(--muted)}
-  .hint{margin-top:6px}
-
-  /* Pills */
-  .pill{
-    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; font-size:12px; font-weight:700;
-    color:#0E4668; background:#E8F3FA; border-radius:999px; border:1px solid #D3E8F5;
-  }
-
-  /* Controles y mensajes */
-  .toggle{display:flex; align-items:center; gap:10px; margin-top:8px}
-  .actions{display:flex; gap:12px; justify-content:flex-end; margin-top:22px}
-  button{border:0; padding:12px 18px; border-radius:12px; cursor:pointer; font-weight:800}
-  .btn-primary{background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde)); color:#fff}
-  .btn-muted{background:#ECF1F6; color:#0F1F34}
-  .btn-primary:active,.btn-muted:active{transform:translateY(1px)}
-  .msg{margin-top:12px; padding:12px; border-radius:12px; display:none}
-  .msg.ok{display:block; background:#E8F5E9; color:var(--ok); border:1px solid #C8E6C9}
-  .msg.err{display:block; background:#FFEBEE; color:var(--error); border:1px solid #FFCDD2}
-</style>
- </head>
+      var(--bg)}
+    .wrap{max-width:var(--container-w);margin:36px auto;padding:0 16px}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .brand .dot{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde));box-shadow:0 0 0 6px rgba(0,102,161,.08)}
+    h1{margin:0;font-weight:800;letter-spacing:.2px}
+    .card{position:relative;padding:30px;border-radius:var(--radius);background:var(--card);backdrop-filter: blur(10px);border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 28px rgba(0,0,0,.06), inset 0 0 0 1.5px rgba(255,255,255,.35)}
+    .card:before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg, rgba(0,102,161,.35), rgba(46,125,50,.35));mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);padding:1px;-webkit-mask-composite:xor;mask-composite:exclude}
+    .section{border-radius:18px;padding:20px 18px 14px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.6);box-shadow:0 8px 18px rgba(16,24,40,.06)}
+    .section + .section{margin-top:18px}
+    .section h3{margin:0 0 14px;font-size:17px;color:#0A3550;letter-spacing:.2px}
+    .grid{display:grid;gap:var(--grid-gap);grid-template-columns:1fr 1fr}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    label{font-weight:700;font-size:13px;color:#12344D;letter-spacing:.35px}
+    .req{color:var(--imp-azul);margin-left:6px}
+    input[type="text"],input[type="email"],select{width:100%;height:var(--input-h);padding:0 14px;border-radius:14px;outline:none;border:1px solid var(--border);background:rgba(255,255,255,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);transition:border-color .15s,box-shadow .15s,transform .02s}
+    input:focus,select:focus{border-color:#5FB1D8;box-shadow:0 0 0 4px rgba(95,177,216,.18)}
+    input[readonly]{background:rgba(248,251,253,.8);color:#3A4A5A}
+    input::placeholder{color:#9AA8B6}
+    small{color:#5B6A7C}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;font-size:12px;font-weight:700;color:#0E4668;background:#E8F3FA;border-radius:999px;border:1px solid #D3E8F5}
+    .toggle{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}
+    button{border:0;padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:800}
+    .btn-primary{background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde));color:#fff}
+    .btn-muted{background:#ECF1F6;color:#0F1F34}
+  </style>
+</head>
 <body>
   <div class="wrap">
     <div class="brand">
       <div class="dot"></div>
       <h1>Formulario de Contratos — Imporagri</h1>
     </div>
-    <form id="formContratos" class="card" novalidate>
-      <!-- Sección 1: Fecha -->
+
+    <!-- Opción A: HTML puro -> POST directo al Webhook -->
+    <form id="formContratos"
+          class="card"
+          action="https://luimporagri.app.n8n.cloud/webhook-test/form-netlify"
+          method="POST"
+          accept-charset="UTF-8">
+
+      <!-- 1) FECHA -->
       <div class="section" aria-labelledby="sec-fecha">
-        <h3 id="sec-fecha">1) FECHA <span class="pill">dd/mm/aaaa</span></h3>
+        <h3 id="sec-fecha">1) FECHA <span class="pill">aaaa-mm-dd</span></h3>
         <div class="grid">
           <div>
             <label for="fecha">FECHA <span class="req">*</span></label>
-<input id="fecha"
-       name="fecha"
-       type="date"
-       lang="es-MX"
-       required
-       min="2000-01-01"
-       max=""  />
-<div class="hint"><small>Selecciona la fecha en el calendario.</small></div>
-
+            <input id="fecha" name="fecha" type="date" lang="es-MX" required min="2000-01-01" />
+            <div class="hint"><small>Selecciona la fecha en el calendario.</small></div>
           </div>
         </div>
       </div>
 
-      <!-- Sección 2: Materia y Tipo de Contrato -->
+      <!-- 2) MATERIA Y TIPO DE CONTRATO -->
       <div class="section" style="margin-top:14px" aria-labelledby="sec-materia">
         <h3 id="sec-materia">2) MATERIA Y TIPO DE CONTRATO</h3>
         <div class="grid">
@@ -155,10 +90,9 @@
         </div>
       </div>
 
-      <!-- Sección 3: Participantes (títulos y nombres) -->
+      <!-- 3) PARTICIPANTES -->
       <div class="section" style="margin-top:14px" aria-labelledby="sec-partes">
         <h3 id="sec-partes">3) PARTICIPANTES (TÍTULOS Y NOMBRES)</h3>
-
         <div class="grid">
           <div>
             <label for="tituloA">TÍTULO PARTE A</label>
@@ -198,21 +132,14 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn-muted" id="btnLimpiar">Limpiar</button>
-        <button type="submit" class="btn-primary" id="btnEnviar">Enviar</button>
+        <button type="reset" class="btn-muted">Limpiar</button>
+        <button type="submit" class="btn-primary">Enviar</button>
       </div>
-
-      <div id="msgOk" class="msg ok">¡Datos enviados correctamente!</div>
-      <div id="msgErr" class="msg err">No se pudo enviar. Revisa los campos o inténtalo de nuevo.</div>
     </form>
   </div>
 
   <script>
-    // ======= CONFIGURACIÓN =======
-    const N8N_WEBHOOK_URL = "https://TU-DOMINIO-DE-N8N/webhook/form-contratos"; // <— CAMBIA ESTA URL
-
-    // Catálogo mínimo “local” (para funcionar hoy). Luego lo reemplazamos por lectura desde n8n/Sheets.
-    // Estructura: materia -> [{ id, nombre, a, b, c, requiereC }]
+    // ===== Catálogo mínimo local para autocompletar títulos =====
     const CATALOGO_LOCAL = {
       CIVIL: [
         { id:"ADHESION_CIVIL", nombre:"CONTRATO DE ADHESIÓN CIVIL", a:"PROVEEDOR", b:"ADHERENTE", c:"", requiereC:false },
@@ -224,12 +151,10 @@
       LABORAL: [
         { id:"LABORAL_INDIVIDUAL", nombre:"CONTRATO INDIVIDUAL DE TRABAJO", a:"PATRÓN", b:"TRABAJADOR", c:"", requiereC:false },
       ],
-      OTROS: [] // Se habilita campo libre
+      OTROS: []
     };
 
     const el = {
-      form: document.getElementById('formContratos'),
-      fecha: document.getElementById('fecha'),
       materia: document.getElementById('materia'),
       tipo: document.getElementById('tipo'),
       otrosWrap: document.getElementById('otrosWrapper'),
@@ -237,172 +162,48 @@
       tituloA: document.getElementById('tituloA'),
       tituloB: document.getElementById('tituloB'),
       tituloC: document.getElementById('tituloC'),
-      nombreA: document.getElementById('nombreA'),
-      nombreB: document.getElementById('nombreB'),
-      nombreC: document.getElementById('nombreC'),
       toggleC: document.getElementById('toggleC'),
       cBlock: document.getElementById('cBlock'),
-      msgOk: document.getElementById('msgOk'),
-      msgErr: document.getElementById('msgErr'),
-      btnLimpiar: document.getElementById('btnLimpiar'),
-      btnEnviar: document.getElementById('btnEnviar'),
     };
 
     function mayus(x){ return (x || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu,'').toUpperCase().trim(); }
-
-    function validarFechaDDMMAAAA(s){
-      const m = (s||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/([12]\d{3})$/);
-      if(!m) return false;
-      const d = +m[1], mo = +m[2], y = +m[3];
-      const dt = new Date(y, mo-1, d);
-      return dt.getFullYear()===y && (dt.getMonth()+1)===mo && dt.getDate()===d;
-    }
-
     function resetTipo(){
       el.tipo.innerHTML = '<option value="" selected disabled>SELECCIONA UNA MATERIA PRIMERO</option>';
-      el.tipo.disabled = true;
-      el.otrosWrap.style.display = 'none';
-      el.tipoOtro.value = '';
-      setTitulos('', '', '');
-      el.toggleC.checked = false;
-      el.cBlock.style.display = 'none';
+      el.tipo.disabled = true; el.otrosWrap.style.display = 'none'; el.tipoOtro.value = '';
+      setTitulos('', '', ''); el.toggleC.checked = false; el.cBlock.style.display = 'none';
     }
-
     function setTitulos(a,b,c){
-      el.tituloA.value = a ? mayus(a) : '';
-      el.tituloB.value = b ? mayus(b) : '';
-      el.tituloC.value = c ? mayus(c) : '';
+      document.getElementById('tituloA').value = a ? mayus(a) : '';
+      document.getElementById('tituloB').value = b ? mayus(b) : '';
+      document.getElementById('tituloC').value = c ? mayus(c) : '';
     }
 
     el.materia.addEventListener('change', () => {
-      const materia = el.materia.value;
-      resetTipo();
-
+      const materia = el.materia.value; resetTipo();
       if(materia === 'OTROS'){
         el.tipo.innerHTML = '<option value="OTROS__LIBRE" selected>OTROS (TEXTO LIBRE)</option>';
-        el.tipo.disabled = false;
-        el.otrosWrap.style.display = 'block';
-        setTitulos('PARTE A','PARTE B','TERCERO');
-        return;
+        el.tipo.disabled = false; el.otrosWrap.style.display = 'block';
+        setTitulos('PARTE A','PARTE B','TERCERO'); return;
       }
-
       const lista = CATALOGO_LOCAL[materia] || [];
-      if(!lista.length){
-        el.tipo.innerHTML = '<option value="" selected disabled>SIN OPCIONES PARA ESTA MATERIA</option>';
-        return;
-      }
+      if(!lista.length){ el.tipo.innerHTML = '<option value="" selected disabled>SIN OPCIONES PARA ESTA MATERIA</option>'; return; }
       el.tipo.disabled = false;
       el.tipo.innerHTML = '<option value="" selected disabled>SELECCIONA UN TIPO</option>' +
         lista.map(x => `<option value="${x.id}">${mayus(x.nombre)}</option>`).join('');
     });
 
     el.tipo.addEventListener('change', () => {
-      const materia = el.materia.value;
-      const id = el.tipo.value;
-      if(materia==='OTROS' && id==='OTROS__LIBRE'){
-        setTitulos('PARTE A','PARTE B','TERCERO');
-        return;
-      }
+      const materia = el.materia.value, id = el.tipo.value;
+      if(materia==='OTROS' && id==='OTROS__LIBRE'){ setTitulos('PARTE A','PARTE B','TERCERO'); return; }
       const item = (CATALOGO_LOCAL[materia]||[]).find(x => x.id===id);
-      if(!item){ setTitulos('','', ''); return; }
+      if(!item){ setTitulos('','',''); return; }
       setTitulos(item.a, item.b, item.c);
-      // Mostrar toggle C según regla
-      if(item.requiereC){
-        el.toggleC.checked = true;
-        el.cBlock.style.display = 'grid';
-      }else{
-        el.toggleC.checked = false;
-        el.cBlock.style.display = 'none';
-      }
+      if(item.requiereC){ el.toggleC.checked = true; el.cBlock.style.display = 'grid'; }
+      else{ el.toggleC.checked = false; el.cBlock.style.display = 'none'; }
     });
 
     el.toggleC.addEventListener('change', () => {
       el.cBlock.style.display = el.toggleC.checked ? 'grid' : 'none';
-    });
-
-    el.btnLimpiar.addEventListener('click', () => {
-      el.form.reset();
-      resetTipo();
-      el.msgOk.style.display='none';
-      el.msgErr.style.display='none';
-    });
-
-    el.form.addEventListener('submit', async (ev) => {
-      ev.preventDefault();
-      el.msgOk.style.display='none';
-      el.msgErr.style.display='none';
-
-      // Validaciones mínimas
-      const fechaRaw = el.fecha.value.trim();
-      if(!validarFechaDDMMAAAA(fechaRaw)){
-        el.msgErr.textContent = 'FECHA inválida; usa dd/mm/aaaa.';
-        el.msgErr.className = 'msg err';
-        el.msgErr.style.display='block';
-        return;
-      }
-      if(!el.materia.value){
-        el.msgErr.textContent = 'Selecciona una MATERIA.';
-        el.msgErr.style.display='block';
-        return;
-      }
-      if(el.materia.value!=='OTROS' && !el.tipo.value){
-        el.msgErr.textContent = 'Selecciona un TIPO DE CONTRATO.';
-        el.msgErr.style.display='block';
-        return;
-      }
-      if(!el.nombreA.value.trim() || !el.nombreB.value.trim()){
-        el.msgErr.textContent = 'NOMBRE DE LA PARTE A y B son obligatorios.';
-        el.msgErr.style.display='block';
-        return;
-      }
-
-      el.btnEnviar.disabled = true; el.btnEnviar.textContent='Enviando…';
-
-      const payload = {
-        // Campo 1 — Fecha
-        fecha_raw: fechaRaw,  // dd/mm/aaaa
-
-        // Campo 2 — Materia & Tipo
-        materia: mayus(el.materia.value),
-        tipo_contrato_id: el.tipo.value || null,
-        tipo_contrato_nombre: (el.tipo.value==='OTROS__LIBRE')
-            ? mayus(el.tipoOtro.value || 'OTROS')
-            : mayus(el.tipo.options[el.tipo.selectedIndex]?.text || ''),
-
-        // Participantes: títulos (solo lectura) + nombres genéricos
-        titulo_parte_a: mayus(el.tituloA.value || 'PARTE A'),
-        titulo_parte_b: mayus(el.tituloB.value || 'PARTE B'),
-        titulo_parte_c: mayus(el.tituloC.value || 'TERCERO'),
-        incluir_tercero: !!el.toggleC.checked,
-
-        nombre_de_la_parte_a: el.nombreA.value.trim(),
-        nombre_de_la_parte_b: el.nombreB.value.trim(),
-        nombre_de_la_parte_c: el.toggleC.checked ? (el.nombreC.value.trim() || '') : '',
-
-        // Metadatos útiles
-        user_agent: navigator.userAgent
-      };
-
-      try{
-        const res = await fetch(N8N_WEBHOOK_URL, {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload)
-        });
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        el.msgOk.textContent='¡Datos enviados correctamente!';
-        el.msgOk.className='msg ok';
-        el.msgOk.style.display='block';
-        el.msgErr.style.display='none';
-        // Si quieres limpiar tras enviar, descomenta:
-        // el.form.reset(); resetTipo();
-      }catch(e){
-        el.msgErr.textContent='No se pudo enviar. Revisa los campos o inténtalo de nuevo.';
-        el.msgErr.className='msg err';
-        el.msgErr.style.display='block';
-      }finally{
-        el.btnEnviar.disabled=false; el.btnEnviar.textContent='Enviar';
-      }
     });
   </script>
 </body>
