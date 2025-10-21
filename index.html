@@ -40,6 +40,14 @@
     .footer-note{margin-top:14px;font-size:12px;color:var(--muted);text-align:right}
     .hint{font-size:12px;color:var(--muted);margin-top:4px}
     .divider{height:1px;background:var(--borde);margin:8px 0 8px 0}
+    .section { background:#ffffffcc; border:1px solid #e6eef5; border-radius:14px; padding:18px; }
+    .section h3 { margin:0 0 6px; font-size:16px; color:#304154 }
+    .clauses .group { padding:12px 0; border-top:1px solid #eef3f7; }
+    .clauses .group:first-child { border-top:0; }
+    .clause-title { display:block; font-weight:700; color:#263645; margin-bottom:8px; }
+    .radios { display:flex; gap:16px; }
+    .radios label { display:flex; align-items:center; gap:8px; font-weight:600; color:#304154; }
+
 
   </style>
 </head>
@@ -109,10 +117,76 @@
 
       </div>
 
+      <div class="divider"></div>
+
+      <section class="section">
+        <h3>CLÁUSULAS OPCIONALES</h3>
+        <p class="hint">Selecciona <strong>Sí</strong> o <strong>No</strong> en cada cláusula (requerido).</p>
+
+        <div class="clauses">
+          <!-- NO COMPETENCIA -->
+          <div class="group">
+            <span class="clause-title">NO COMPETENCIA</span>
+            <div class="radios">
+              <label><input type="radio" name="NO_COMPETENCIA" value="SI" required> Sí</label>
+              <label><input type="radio" name="NO_COMPETENCIA" value="NO" required> No</label>
+            </div>
+          </div>
+
+          <!-- NO SOLICITACIÓN -->
+          <div class="group">
+            <span class="clause-title">NO SOLICITACIÓN</span>
+            <div class="radios">
+              <label><input type="radio" name="NO_SOLICITACION" value="SI" required> Sí</label>
+              <label><input type="radio" name="NO_SOLICITACION" value="NO" required> No</label>
+            </div>
+          </div>
+
+          <!-- CONFIDENCIALIDAD -->
+          <div class="group">
+            <span class="clause-title">CONFIDENCIALIDAD</span>
+            <div class="radios">
+              <label><input type="radio" name="CONFIDENCIALIDAD_OPCIONAL" value="SI" required> Sí</label>
+              <label><input type="radio" name="CONFIDENCIALIDAD_OPCIONAL" value="NO" required> No</label>
+            </div>
+          </div>
+
+          <!-- EXCLUSIVIDAD -->
+          <div class="group">
+            <span class="clause-title">EXCLUSIVIDAD</span>
+            <div class="radios">
+              <label><input type="radio" name="EXCLUSIVIDAD" value="SI" required> Sí</label>
+              <label><input type="radio" name="EXCLUSIVIDAD" value="NO" required> No</label>
+            </div>
+          </div>
+
+          <!-- MEDIACIÓN Y ARBITRAJE -->
+          <div class="group">
+            <span class="clause-title">MEDIACIÓN Y ARBITRAJE</span>
+            <div class="radios">
+              <label><input type="radio" name="MEDIACION_ARBITRAJE" value="SI" required> Sí</label>
+              <label><input type="radio" name="MEDIACION_ARBITRAJE" value="NO" required> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider" style="margin:14px 0"></div>
+
+        <h3>FIRMA</h3>
+        <p class="hint">Selecciona el tipo de firma. Este campo siempre es obligatorio.</p>
+        <div class="radios">
+          <label><input type="radio" name="FIRMA" value="EJEMPLARES Y FIRMA ELECTRÓNICA" required> EJEMPLARES Y FIRMA ELECTRÓNICA</label>
+          <label><input type="radio" name="FIRMA" value="FIRMA AUTÓGRAFA" required> FIRMA AUTÓGRAFA</label>
+        </div>
+      </section>
+
+
       <div class="actions">
         <button class="btn btn-sec" type="reset" style="margin-right:auto; font-size: 15px">Borrar</button>
         <button class="btn btn-prim" type="submit" style="height:52px;padding:0 28px;font-size:15px;min-width:140px">Enviar</button>
       </div>
+
+
       <div class="footer-note" id="status">Listo para enviar.</div>
     </form>
   </main>
