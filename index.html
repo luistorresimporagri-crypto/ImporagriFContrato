@@ -3,207 +3,351 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Formulario de Contratos — Imporagri</title>
+  <title>Formulario de Contratos</title>
   <style>
-    :root{--imp-azul:#0066A1;--imp-verde:#2E7D32;--text:#0E1B2A;--muted:#5B6A7C;--bg:#F2F6F9;--card:rgba(255,255,255,.66);--border:#DCE6EF;--radius:22px;--grid-gap:22px;--container-w:980px;--input-h:52px}
+    :root{
+      --azul:#0066A1; --verde:#2E7D32;
+      --texto:#0E2433; --muted:#6B7A8C; --borde:#E6EEF5;
+      --card:#ffffff; --radius:18px; --input-h:48px; --focus:0 0 0 4px rgba(0,102,161,.12);
+    }
     *{box-sizing:border-box}
-    body{margin:0;color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:
-      radial-gradient(1200px 600px at 10% -10%, #D6EEF9 0%, rgba(214,238,249,0) 60%),
-      radial-gradient(900px 500px at 110% 10%, #DEF3E6 0%, rgba(222,243,230,0) 55%),
-      var(--bg)}
-    .wrap{max-width:var(--container-w);margin:36px auto;padding:0 16px}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-    .brand .dot{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde));box-shadow:0 0 0 6px rgba(0,102,161,.08)}
-    h1{margin:0;font-weight:800;letter-spacing:.2px}
-    .card{position:relative;padding:30px;border-radius:var(--radius);background:var(--card);backdrop-filter: blur(10px);border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 28px rgba(0,0,0,.06), inset 0 0 0 1.5px rgba(255,255,255,.35)}
-    .card:before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg, rgba(0,102,161,.35), rgba(46,125,50,.35));mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);padding:1px;-webkit-mask-composite:xor;mask-composite:exclude}
-    .section{border-radius:18px;padding:20px 18px 14px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.6);box-shadow:0 8px 18px rgba(16,24,40,.06)}
-    .section + .section{margin-top:18px}
-    .section h3{margin:0 0 14px;font-size:17px;color:#0A3550;letter-spacing:.2px}
-    .grid{display:grid;gap:var(--grid-gap);grid-template-columns:1fr 1fr}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    label{font-weight:700;font-size:13px;color:#12344D;letter-spacing:.35px}
-    .req{color:var(--imp-azul);margin-left:6px}
-    input[type="text"],input[type="email"],select{width:100%;height:var(--input-h);padding:0 14px;border-radius:14px;outline:none;border:1px solid var(--border);background:rgba(255,255,255,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);transition:border-color .15s,box-shadow .15s,transform .02s}
-    input:focus,select:focus{border-color:#5FB1D8;box-shadow:0 0 0 4px rgba(95,177,216,.18)}
-    input[readonly]{background:rgba(248,251,253,.8);color:#3A4A5A}
-    input::placeholder{color:#9AA8B6}
-    small{color:#5B6A7C}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;font-size:12px;font-weight:700;color:#0E4668;background:#E8F3FA;border-radius:999px;border:1px solid #D3E8F5}
-    .toggle{display:flex;align-items:center;gap:10px;margin-top:8px}
-    .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}
-    button{border:0;padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:800}
-    .btn-primary{background:linear-gradient(135deg,var(--imp-azul),var(--imp-verde));color:#fff}
-    .btn-muted{background:#ECF1F6;color:#0F1F34}
+    body{margin:0;background:#f8f8f8;color:var(--texto);
+      font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:48px auto;padding:0 20px}
+    .header{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+    .badge{display:inline-block;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      font-size:12px;color:#fff;background:linear-gradient(90deg,var(--azul),var(--verde));
+      padding:6px 10px;border-radius:999px;width:max-content}
+
+    h1{margin:0;font-size:clamp(28px,4vw,40px);line-height:1.15;
+      background:linear-gradient(90deg,var(--azul),var(--verde));
+      -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+    .sub{margin:0;color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--borde);border-radius:var(--radius);
+      padding:22px;box-shadow:0 4px 18px rgba(0,0,0,.04)}
+    .grid{display:grid;gap:16px;grid-template-columns:1fr}
+    label{font-size:14px;color:#304154;font-weight:600;margin-bottom:6px;display:block}
+    .input{width:100%;height:var(--input-h);padding:0 14px;border:1px solid var(--borde);
+      border-radius:12px;outline:none;background:#fff;color:var(--texto)}
+    .input:focus, select:focus, textarea:focus{box-shadow:var(--focus);border-color:var(--azul)}
+    select.input{height:var(--input-h)}
+    textarea.input{min-height:110px;padding-top:10px;padding-bottom:10px;resize:vertical}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
+    .btn{height:44px;padding:0 18px;border:0;border-radius:12px;font-weight:700;cursor:pointer}
+    .btn-sec{background:#ffffff;color:#e90000}
+    .btn-prim{background:var(--azul);color:#fff}
+    .footer-note{margin-top:14px;font-size:12px;color:var(--muted);text-align:right}
+    .hint{font-size:12px;color:var(--muted);margin-top:4px}
+    .divider{height:1px;background:var(--borde);margin:8px 0 8px 0}
+
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="brand">
-      <div class="dot"></div>
-      <h1>Formulario de Contratos — Imporagri</h1>
-    </div>
+  <main class="wrap">
+    <header class="header">
+      <span class="badge">Contratos</span>
+      <h1>Formulario de Contratos</h1>
+      <p class="sub">Completa la información. Fecha, Materia, Tipo de Contrato, Partes y Placeholders.</p>
+    </header>
 
-    <!-- Opción A: HTML puro -> POST directo al Webhook -->
     <form id="formContratos"
           class="card"
           action="https://luimporagri.app.n8n.cloud/webhook-test/form-netlify"
           method="POST"
           accept-charset="UTF-8">
 
-      <!-- 1) FECHA -->
-      <div class="section" aria-labelledby="sec-fecha">
-        <h3 id="sec-fecha">1) FECHA <span class="pill">aaaa-mm-dd</span></h3>
-        <div class="grid">
-          <div>
-            <label for="fecha">FECHA <span class="req">*</span></label>
-            <input id="fecha" name="fecha" type="date" lang="es-MX" required min="2000-01-01" />
-            <div class="hint"><small>Selecciona la fecha en el calendario.</small></div>
-          </div>
+      <div class="grid" id="form-grid">
+        <!-- FECHA (UI nativa, salida como dd/mm/aaaa en campo oculto FECHA) -->
+        <div>
+          <label for="fecha-ui">FECHA</label>
+          <input id="fecha-ui" class="input" type="date" required />
+          <input type="hidden" name="FECHA" id="FECHA" />
         </div>
-      </div>
 
-      <!-- 2) MATERIA Y TIPO DE CONTRATO -->
-      <div class="section" style="margin-top:14px" aria-labelledby="sec-materia">
-        <h3 id="sec-materia">2) MATERIA Y TIPO DE CONTRATO</h3>
-        <div class="grid">
+        <div class="divider"></div>
+
+        <!-- MATERIA y TIPO DE CONTRATO -->
+        <div class="row-2">
           <div>
-            <label for="materia">MATERIA <span class="req">*</span></label>
-            <select id="materia" name="materia" required>
-              <option value="" selected disabled>SELECCIONA UNA OPCIÓN</option>
-              <option value="CIVIL">CIVIL</option>
-              <option value="MERCANTIL">MERCANTIL</option>
-              <option value="LABORAL">LABORAL</option>
-              <option value="OTROS">OTROS</option>
+            <label for="materia">MATERIA</label>
+            <select id="materia" name="MATERIA" class="input" required>
+              <option value="" selected disabled>Selecciona la materia</option>
             </select>
           </div>
           <div>
-            <label for="tipo">TIPO DE CONTRATO <span class="req">*</span></label>
-            <select id="tipo" name="tipo_contrato" required disabled>
-              <option value="" selected disabled>SELECCIONA UNA MATERIA PRIMERO</option>
+            <label for="tipo">TIPO DE CONTRATO</label>
+            <select id="tipo" name="TIPO_CONTRATO" class="input" required disabled>
+              <option value="" selected disabled>Selecciona el contrato</option>
             </select>
-            <div id="otrosWrapper" class="hint" style="display:none; margin-top:8px">
-              <label for="tipo_otro">NOMBRE DEL CONTRATO (OTROS)</label>
-              <input id="tipo_otro" name="tipo_contrato_otro" type="text" placeholder="ESCRIBE EL NOMBRE DEL CONTRATO" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3) PARTICIPANTES -->
-      <div class="section" style="margin-top:14px" aria-labelledby="sec-partes">
-        <h3 id="sec-partes">3) PARTICIPANTES (TÍTULOS Y NOMBRES)</h3>
-        <div class="grid">
-          <div>
-            <label for="tituloA">TÍTULO PARTE A</label>
-            <input id="tituloA" name="titulo_parte_a" type="text" readonly placeholder="(SE AUTOCARGA SEGÚN CONTRATO)" />
-          </div>
-          <div>
-            <label for="nombreA">NOMBRE DE LA PARTE A <span class="req">*</span></label>
-            <input id="nombreA" name="nombre_parte_a" type="text" placeholder="RAZÓN SOCIAL O NOMBRE COMPLETO" required />
-          </div>
-          <div>
-            <label for="tituloB">TÍTULO PARTE B</label>
-            <input id="tituloB" name="titulo_parte_b" type="text" readonly placeholder="(SE AUTOCARGA SEGÚN CONTRATO)" />
-          </div>
-          <div>
-            <label for="nombreB">NOMBRE DE LA PARTE B <span class="req">*</span></label>
-            <input id="nombreB" name="nombre_parte_b" type="text" placeholder="RAZÓN SOCIAL O NOMBRE COMPLETO" required />
           </div>
         </div>
 
-        <div class="toggle">
-          <input type="checkbox" id="toggleC" />
-          <label for="toggleC">¿AGREGAR TERCERO (PARTE C)?</label>
-        </div>
-
-        <div id="cBlock" class="grid" style="display:none; margin-top:10px">
+        <!-- PARTES -->
+        <div class="row-2">
           <div>
-            <label for="tituloC">TÍTULO PARTE C</label>
-            <input id="tituloC" name="titulo_parte_c" type="text" readonly placeholder="(SE AUTOCARGA SI APLICA)" />
+            <label for="parteA">NOMBRE DE LA PARTE A</label>
+            <input id="parteA" name="PARTE_A_NOMBRE" class="input" type="text" required placeholder=""/>
+            <div class="hint" id="hintA"></div>
           </div>
           <div>
-            <label for="nombreC">NOMBRE DE LA PARTE C</label>
-            <input id="nombreC" name="nombre_parte_c" type="text" placeholder="RAZÓN SOCIAL O NOMBRE COMPLETO" />
+            <label for="parteB">NOMBRE DE LA PARTE B</label>
+            <input id="parteB" name="PARTE_B_NOMBRE" class="input" type="text" required placeholder=""/>
+            <div class="hint" id="hintB"></div>
           </div>
         </div>
+        <div id="grupoParteC" style="display:none">
+          <label for="parteC">NOMBRE DE LA PARTE C</label>
+          <input id="parteC" name="PARTE_C_NOMBRE" class="input" type="text" placeholder=""/>
+          <div class="hint" id="hintC"></div>
+        </div>
 
-        <div class="hint"><small>PARTE A y PARTE B son obligatorias. PARTE C sólo si el contrato lo requiere o activas el toggle.</small></div>
+        <div class="divider"></div>
+
+        <!-- PLACEHOLDERS DINÁMICOS -->
+        <div id="placeholdersWrap"></div>
+
       </div>
 
       <div class="actions">
-        <button type="reset" class="btn-muted">Limpiar</button>
-        <button type="submit" class="btn-primary">Enviar</button>
+        <button class="btn btn-sec" type="reset" style="margin-right:auto; font-size: 15px">Borrar</button>
+        <button class="btn btn-prim" type="submit" style="height:52px;padding:0 28px;font-size:15px;min-width:140px">Enviar</button>
       </div>
+      <div class="footer-note" id="status">Listo para enviar.</div>
     </form>
-  </div>
+  </main>
+
+  <!-- Catálogo ORIGINAL integrado (roles + placeholders) -->
+  <script>
+    const __jsonCompleto = {"materias":["CIVIL","MERCANTIL","LABORAL","OTROS"],"contratosPorMateria":{
+"CIVIL":[
+{"CONTRATO":"CONTRATO DE ARRENDAMIENTO FINANCIERO","PARTES":{"A":"ARRENDADOR FINANCIERO","B":"ARRENDATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ADHESIÓN CIVIL","PARTES":{"A":"PROVEEDOR","B":"ADHERENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ANTICRESIS","PARTES":{"A":"ACREEDOR","B":"DEUDOR"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ARRENDAMIENTO","PARTES":{"A":"ARRENDADOR","B":"ARRENDATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ASOCIACIÓN EN PARTICIPACIÓN","PARTES":{"A":"ASOCIANTE","B":"ASOCIADO"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CESIÓN DE DERECHOS","PARTES":{"A":"CEDENTE","B":"CESIONARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CESIÓN DE OBLIGACIONES","PARTES":{"A":"CEDENTE DE OBLIGACIONES","B":"CESIONARIO DE OBLIGACIONES"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE COMODATO","PARTES":{"A":"COMODANTE","B":"COMODATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE COMPRAVENTA","PARTES":{"A":"VENDEDOR","B":"COMPRADOR"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CONSTITUCIÓN DE SERVIDUMBRE","PARTES":{"A":"PREDIO DOMINANTE","B":"PREDIO SIRVIENTE"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CONSTITUCIÓN DE USUFRUCTO","PARTES":{"A":"NUDO PROPIETARIO","B":"USUFRUCTUARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE DEPÓSITO","PARTES":{"A":"DEPOSITANTE","B":"DEPOSITARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE DONACIÓN","PARTES":{"A":"DONANTE","B":"DONATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE FIANZA","PARTES":{"A":"FIADOR","B":"DEUDOR PRINCIPAL","C":"ACREEDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE HIPOTECA","PARTES":{"A":"ACREEDOR HIPOTECARIO","B":"DEUDOR HIPOTECARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE MANDATO","PARTES":{"A":"MANDANTE","B":"MANDATARIO"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE MUTUO","PARTES":{"A":"ACREEDOR","B":"DEUDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE NOVACIÓN","PARTES":{"A":"ACREEDOR","B":"DEUDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE OBRA A PRECIO ALZADO","PARTES":{"A":"CONTRATISTA","B":"CLIENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PERMUTA","PARTES":{"A":"PERMUTANTE","B":"PERMUTANTE"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":true,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PRENDA","PARTES":{"A":"ACREEDOR PRENDARIO","B":"DEUDOR PRENDARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PRESTACIÓN DE SERVICIOS","PARTES":{"A":"PRESTADOR DE SERVICIOS","B":"CLIENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE RECONOCIMIENTO DE ADEUDO","PARTES":{"A":"DEUDOR","B":"ACREEDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE USO O APROVECHAMIENTO DE BIENES (HABITACIÓN)","PARTES":{"A":"USUARIO","B":"PROPIETARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}}
+],
+"MERCANTIL":[
+{"CONTRATO":"CONTRATO DE ARRENDAMIENTO FINANCIERO","PARTES":{"A":"ARRENDADOR FINANCIERO","B":"ARRENDATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ALMACENAJE O DEPÓSITO EN ALMACÉN GENERAL","PARTES":{"A":"ALMACENISTA","B":"DEPOSITANTE"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE APERTURA DE CRÉDITO","PARTES":{"A":"ACREEDOR","B":"DEUDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE ASOCIACIÓN EN PARTICIPACIÓN","PARTES":{"A":"ASOCIANTE","B":"ASOCIADO"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE COMISIÓN","PARTES":{"A":"COMITENTE","B":"COMISIONISTA"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE COMPRAVENTA","PARTES":{"A":"VENDEDOR","B":"COMPRADOR"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CORRETAJE","PARTES":{"A":"CORREDOR","B":"CLIENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE CUENTA CORRIENTE","PARTES":{"A":"BANCO","B":"CLIENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE DESCUENTO DE CRÉDITOS","PARTES":{"A":"DESCONTANTE","B":"DESCONTADO"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE DONACIÓN","PARTES":{"A":"DONANTE","B":"DONATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE EMISIÓN DE OBLIGACIONES","PARTES":{"A":"EMISOR","B":"TENEDORES DE OBLIGACIONES"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE FACTORAJE FINANCIERO","PARTES":{"A":"FACTORANTE","B":"FACTORADO"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE FIDEICOMISO","PARTES":{"A":"FIDUCIANTE","B":"FIDUCIARIO","C":"BENEFICIARIO (SEGÚN OBJETO)"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE JOINT VENTURE","PARTES":{"A":"SOCIO 1","B":"SOCIO 2"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE MUTUO","PARTES":{"A":"ACREEDOR","B":"DEUDOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PERMUTA","PARTES":{"A":"PERMUTANTE","B":"PERMUTANTE"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":true,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PRENDA","PARTES":{"A":"ACREEDOR PRENDARIO","B":"DEUDOR PRENDARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PRENDA SIN TRANSMISIÓN DE POSESIÓN","PARTES":{"A":"ACREEDOR PRENDARIO","B":"DEUDOR PRENDARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE PRESTACIÓN DE SERVICIOS","PARTES":{"A":"PROVEEDOR DEL SERVICIO","B":"CLIENTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE REPORTO","PARTES":{"A":"REPORTADOR","B":"REPORTADO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE SUMINISTRO","PARTES":{"A":"PROVEEDOR","B":"COMPRADOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":true,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}},
+{"CONTRATO":"CONTRATO DE TRANSPORTE DE MERCANCÍAS","PARTES":{"A":"TRANSPORTISTA","B":"CARGADOR/DESTINATARIO"},"PLACEHOLDERS":{"BIENES_A":true,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}}
+],
+"LABORAL":[
+{"CONTRATO":"CONTRATO DE SUBCONTRATACIÓN PERMITIDA (SERVICIOS ESPECIALIZADOS)","PARTES":{"A":"PRESTADOR ESPECIALIZADO","B":"CONTRATANTE"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":false}},
+{"CONTRATO":"CONTRATO LABORAL","PARTES":{"A":"PATRÓN (EMPRESA)","B":"TRABAJADOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":false,"MONTO":false,"PUESTO":true,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":false}}
+],
+"OTROS":[
+{"CONTRATO":"CONFIDENCIALIDAD","PARTES":{"A":"REVELADOR","B":"RECEPTOR"},"PLACEHOLDERS":{"BIENES_A":false,"BIENES_B":false,"DESCRIPCION_CONFIDENCIAL":true,"MONTO":false,"PUESTO":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION":false,"SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B":false,"TASA":true}}
+]
+}};
+  </script>
 
   <script>
-    // ===== Catálogo mínimo local para autocompletar títulos =====
-    const CATALOGO_LOCAL = {
-      CIVIL: [
-        { id:"ADHESION_CIVIL", nombre:"CONTRATO DE ADHESIÓN CIVIL", a:"PROVEEDOR", b:"ADHERENTE", c:"", requiereC:false },
-        { id:"ARRENDAMIENTO_FINANCIERO", nombre:"CONTRATO DE ARRENDAMIENTO FINANCIERO", a:"ARRENDADOR", b:"ARRENDATARIO", c:"", requiereC:false },
-      ],
-      MERCANTIL: [
-        { id:"COMPRAVENTA_MERCANTIL", nombre:"CONTRATO DE COMPRAVENTA MERCANTIL", a:"VENDEDOR", b:"COMPRADOR", c:"", requiereC:false },
-      ],
-      LABORAL: [
-        { id:"LABORAL_INDIVIDUAL", nombre:"CONTRATO INDIVIDUAL DE TRABAJO", a:"PATRÓN", b:"TRABAJADOR", c:"", requiereC:false },
-      ],
-      OTROS: []
+    // ====== Helpers ======
+    const $ = (s, c=document) => c.querySelector(s);
+    const statusEl = $("#status");
+    const pad2 = n => String(n).padStart(2,"0");
+    const toDDMMYYYY = (ymd) => {
+      const [y,m,d] = ymd.split("-").map(Number);
+      return `${pad2(d)}/${pad2(m)}/${y}`;
     };
 
-    const el = {
-      materia: document.getElementById('materia'),
-      tipo: document.getElementById('tipo'),
-      otrosWrap: document.getElementById('otrosWrapper'),
-      tipoOtro: document.getElementById('tipo_otro'),
-      tituloA: document.getElementById('tituloA'),
-      tituloB: document.getElementById('tituloB'),
-      tituloC: document.getElementById('tituloC'),
-      toggleC: document.getElementById('toggleC'),
-      cBlock: document.getElementById('cBlock'),
+    // ====== FECHA: UI nativa -> salida FECHA (dd/mm/aaaa) ======
+    const fechaUi = $("#fecha-ui");
+    const fechaOut = $("#FECHA");
+    const setFechaOut = () => {
+      if (!fechaUi.value) return;
+      fechaOut.value = toDDMMYYYY(fechaUi.value);
+      statusEl.textContent = `Fecha: ${fechaOut.value}`;
     };
+    // Inicializa con hoy
+    (() => {
+      const now = new Date();
+      fechaUi.value = `${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
+      setFechaOut();
+    })();
+    fechaUi.addEventListener("change", setFechaOut);
 
-    function mayus(x){ return (x || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu,'').toUpperCase().trim(); }
-    function resetTipo(){
-      el.tipo.innerHTML = '<option value="" selected disabled>SELECCIONA UNA MATERIA PRIMERO</option>';
-      el.tipo.disabled = true; el.otrosWrap.style.display = 'none'; el.tipoOtro.value = '';
-      setTitulos('', '', ''); el.toggleC.checked = false; el.cBlock.style.display = 'none';
-    }
-    function setTitulos(a,b,c){
-      document.getElementById('tituloA').value = a ? mayus(a) : '';
-      document.getElementById('tituloB').value = b ? mayus(b) : '';
-      document.getElementById('tituloC').value = c ? mayus(c) : '';
-    }
+    // ====== DATA ======
+    const DATA_FULL = __jsonCompleto;
+    const materias = DATA_FULL.materias;
+    const contratosPorMateria = DATA_FULL.contratosPorMateria;
 
-    el.materia.addEventListener('change', () => {
-      const materia = el.materia.value; resetTipo();
-      if(materia === 'OTROS'){
-        el.tipo.innerHTML = '<option value="OTROS__LIBRE" selected>OTROS (TEXTO LIBRE)</option>';
-        el.tipo.disabled = false; el.otrosWrap.style.display = 'block';
-        setTitulos('PARTE A','PARTE B','TERCERO'); return;
+    // ====== DOM ======
+    const selMateria = $("#materia");
+    const selTipo = $("#tipo");
+    const parteA = $("#parteA");
+    const parteB = $("#parteB");
+    const parteC = $("#parteC");
+    const hintA  = $("#hintA");
+    const hintB  = $("#hintB");
+    const hintC  = $("#hintC");
+    const grupoC = $("#grupoParteC");
+    const placeholdersWrap = $("#placeholdersWrap");
+
+    // ====== Cargar Materias ======
+    materias.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m; opt.textContent = m;
+      selMateria.appendChild(opt);
+    });
+
+    // ====== Eventos ======
+    selMateria.addEventListener("change", () => {
+      selTipo.innerHTML = '<option value="" selected disabled>Selecciona el contrato</option>';
+      selTipo.disabled = false;
+      resetPartes();
+      resetPlaceholders();
+
+      (contratosPorMateria[selMateria.value] || []).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.CONTRATO; opt.textContent = item.CONTRATO;
+        selTipo.appendChild(opt);
+      });
+    });
+
+    selTipo.addEventListener("change", () => {
+      resetPartes();
+      resetPlaceholders();
+      const cto = getContratoActual();
+      if(!cto) return;
+
+      const roles = cto.PARTES || {};
+      hintA.textContent = roles.A ? `Rol: ${roles.A}` : "";
+      hintB.textContent = roles.B ? `Rol: ${roles.B}` : "";
+      parteA.placeholder = roles.A || "";
+      parteB.placeholder = roles.B || "";
+      if(roles.C){
+        grupoC.style.display = "";
+        parteC.required = true;
+        hintC.textContent = `Rol: ${roles.C}`;
+        parteC.placeholder = roles.C || "";
+      }else{
+        grupoC.style.display = "none";
+        parteC.required = false;
+        parteC.value = "";
+        hintC.textContent = "";
       }
-      const lista = CATALOGO_LOCAL[materia] || [];
-      if(!lista.length){ el.tipo.innerHTML = '<option value="" selected disabled>SIN OPCIONES PARA ESTA MATERIA</option>'; return; }
-      el.tipo.disabled = false;
-      el.tipo.innerHTML = '<option value="" selected disabled>SELECCIONA UN TIPO</option>' +
-        lista.map(x => `<option value="${x.id}">${mayus(x.nombre)}</option>`).join('');
+
+      renderPlaceholders(cto.PLACEHOLDERS || {});
     });
 
-    el.tipo.addEventListener('change', () => {
-      const materia = el.materia.value, id = el.tipo.value;
-      if(materia==='OTROS' && id==='OTROS__LIBRE'){ setTitulos('PARTE A','PARTE B','TERCERO'); return; }
-      const item = (CATALOGO_LOCAL[materia]||[]).find(x => x.id===id);
-      if(!item){ setTitulos('','',''); return; }
-      setTitulos(item.a, item.b, item.c);
-      if(item.requiereC){ el.toggleC.checked = true; el.cBlock.style.display = 'grid'; }
-      else{ el.toggleC.checked = false; el.cBlock.style.display = 'none'; }
-    });
+    function getContratoActual(){
+      const mat = selMateria.value;
+      const nombre = selTipo.value;
+      return (contratosPorMateria[mat] || []).find(c => c.CONTRATO === nombre);
+    }
+    function resetPartes(){
+      parteA.value = ""; parteB.value = ""; parteC.value = "";
+      hintA.textContent = ""; hintB.textContent = ""; hintC.textContent = "";
+      parteC.required = false; grupoC.style.display = "none";
+      parteA.placeholder = ""; parteB.placeholder = ""; parteC.placeholder = "";
+    }
+    function resetPlaceholders(){ placeholdersWrap.innerHTML = ""; }
 
-    el.toggleC.addEventListener('change', () => {
-      el.cBlock.style.display = el.toggleC.checked ? 'grid' : 'none';
+    // ====== Placeholders dinámicos ======
+    const NOMBRES_PLACE = [
+      "BIENES_A","BIENES_B","DESCRIPCION_CONFIDENCIAL","MONTO","PUESTO",
+      "SERVICIO_PRODUCTO_DERECHO_OBLIGACION","SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B","TASA"
+    ];
+
+    function renderPlaceholders(map){
+      placeholdersWrap.innerHTML = "";
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      placeholdersWrap.appendChild(grid);
+
+      // Primero, si aplica MONTO, lo ponemos con MONEDA en una misma fila
+      if (map["MONTO"]) {
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `<div class="row-2">
+             <div>
+               <label for="MONTO">MONTO</label>
+               <input id="MONTO" name="MONTO" class="input" type="text" required />
+             </div>
+             <div>
+               <label for="MONEDA">MONEDA</label>
+               <select id="MONEDA" name="MONEDA" class="input" required>
+                 <option value="" selected disabled>Selecciona la moneda</option>
+                 <option value="MXN">MXN</option>
+                 <option value="USD">USD</option>
+               </select>
+             </div>
+           </div>`
+        );
+      }
+
+      // Luego el resto en el orden estándar
+      const ORDER = [
+        "BIENES_A","BIENES_B","DESCRIPCION_CONFIDENCIAL","PUESTO",
+        "SERVICIO_PRODUCTO_DERECHO_OBLIGACION","SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B","TASA"
+      ];
+
+      ORDER.forEach((name) => {
+        if (!map[name]) return;
+
+        if (name === "DESCRIPCION_CONFIDENCIAL") {
+          grid.insertAdjacentHTML(
+            "beforeend",
+            `<div>
+               <label for="${name}">${name}</label>
+               <textarea id="${name}" name="${name}" class="input" required></textarea>
+             </div>`
+          );
+        } else {
+          grid.insertAdjacentHTML(
+            "beforeend",
+            `<div>
+               <label for="${name}">${name}</label>
+               <input id="${name}" name="${name}" class="input" type="text" required />
+             </div>`
+          );
+        }
+      });
+    }
+    // Asegura fecha de salida antes de enviar
+    document.getElementById("formContratos").addEventListener("submit", () => {
+      setFechaOut();
     });
   </script>
 </body>
