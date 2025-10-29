@@ -139,12 +139,6 @@
       .actions{flex-direction:column-reverse;align-items:stretch}
       .btn{width:100%}
     }
-    /* Buscador para selects */
-    .searchwrap{display:flex;flex-direction:column;gap:8px}
-    .searchbox{
-      height:40px;border:1px solid var(--borde);border-radius:10px;padding:0 36px 0 12px;
-      background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="%236B7A8C"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l4.25 4.25 1.5-1.5L15.5 14zM10.5 15A4.5 4.5 0 1 1 15 10.5 4.505 4.505 0 0 1 10.5 15z"/></svg>') no-repeat right 8px center;
-    }
   </style>
 </head>
 <body>
@@ -189,41 +183,34 @@
           </div>
         </div>
 
-       <!-- PARTES (con buscador) -->
-       <div class="row-2">
-         <div>
-           <label for="parteA">NOMBRE DE LA PARTE A</label>
-           <div class="searchwrap">
-             <input id="searchA" class="searchbox" type="text" placeholder="Buscar nombre…">
-             <select id="parteA" name="PARTE_A_NOMBRE" class="input" required disabled>
-               <option value="" selected>Cargando opciones…</option>
-             </select>
-           </div>
-           <div class="hint" id="hintA"></div>
-         </div>
-         <div>
-           <label for="parteB">NOMBRE DE LA PARTE B</label>
-           <div class="searchwrap">
-             <input id="searchB" class="searchbox" type="text" placeholder="Buscar nombre…">
-             <select id="parteB" name="PARTE_B_NOMBRE" class="input" required disabled>
-               <option value="" selected>Cargando opciones…</option>
-             </select>
-           </div>
-           <div class="hint" id="hintB"></div>
-         </div>
-       </div>
+        <!-- PARTES con buscador integrado (datalist) -->
+        <div class="row-2">
+          <div>
+            <label for="parteA">NOMBRE DE LA PARTE A</label>
+            <input id="parteA" name="PARTE_A_NOMBRE" class="input" type="text"
+                   placeholder="Buscar…"
+                   list="namesA" required disabled />
+            <datalist id="namesA"></datalist>
+            <div class="hint" id="hintA"></div>
+          </div>
+          <div>
+            <label for="parteB">NOMBRE DE LA PARTE B</label>
+            <input id="parteB" name="PARTE_B_NOMBRE" class="input" type="text"
+                   placeholder="Buscar…"
+                   list="namesB" required disabled />
+            <datalist id="namesB"></datalist>
+            <div class="hint" id="hintB"></div>
+          </div>
+        </div>
 
-       <div id="grupoParteC" style="display:none">
-         <label for="parteC">NOMBRE DE LA PARTE C</label>
-         <div class="searchwrap">
-           <input id="searchC" class="searchbox" type="text" placeholder="Buscar nombre…">
-           <select id="parteC" name="PARTE_C_NOMBRE" class="input" disabled>
-             <option value="" selected>Cargando opciones…</option>
-           </select>
-         </div>
-         <div class="hint" id="hintC"></div>
-       </div>
-
+        <div id="grupoParteC" style="display:none">
+          <label for="parteC">NOMBRE DE LA PARTE C</label>
+          <input id="parteC" name="PARTE_C_NOMBRE" class="input" type="text"
+                 placeholder="Buscar…"
+                 list="namesC" disabled />
+          <datalist id="namesC"></datalist>
+          <div class="hint" id="hintC"></div>
+        </div>
 
         <div class="divider"></div>
 
@@ -374,7 +361,7 @@
 
   <!-- Lógica -->
   <script>
-    // ===== Helpers cortos =====
+    // ===== Helpers =====
     const $ = (s, c=document) => c.querySelector(s);
     const statusEl = $("#status");
     const pad2 = n => String(n).padStart(2,"0");
@@ -383,49 +370,7 @@
       return `${pad2(d)}/${pad2(m)}/${y}`;
     };
 
-    // Normaliza para búsqueda (ignora acentos y mayúsculas)
-    const norm = s => String(s||"")
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-
-    // Conecta un input de búsqueda con un select: filtra <option> por texto
-    function attachSearch($input, $select){
-      if(!$input || !$select) return;
-      const filter = () => {
-        const q = norm($input.value);
-        // preserva el primer option (deshabilitado) como encabezado
-        [...$select.options].forEach((op, idx) => {
-          if(idx===0){ op.hidden=false; return; }
-          op.hidden = q ? !norm(op.textContent).includes(q) : false;
-        });
-        // si no hay coincidencias visibles (además del encabezado), muestra un vacío
-        const any = [...$select.options].some((op,idx)=>idx>0 && !op.hidden);
-        $select.classList.toggle('nohits', !any);
-      };
-      $input.addEventListener('input', filter);
-      // permitir Enter -> seleccionar la 1a coincidencia visible
-      $input.addEventListener('keydown', e=>{
-        if(e.key==='Enter'){
-          const match = [...$select.options].find((op,idx)=>idx>0 && !op.hidden);
-          if(match){ $select.value = match.value; $select.dispatchEvent(new Event('change')); }
-          e.preventDefault();
-        }
-      });
-    }
-
-    // Llama esto DESPUÉS de llenar los selects (fillSelect) para A/B/C
-    function wireSearchBoxes(){
-      attachSearch(document.getElementById('searchA'), document.getElementById('parteA'));
-      attachSearch(document.getElementById('searchB'), document.getElementById('parteB'));
-      const searchC = document.getElementById('searchC');
-      const parteC  = document.getElementById('parteC');
-      // Solo conectamos C si existe (cuando aplica el contrato)
-      if (document.getElementById('grupoParteC').style.display !== 'none') {
-        attachSearch(searchC, parteC);
-      }
-    }
-
-    // ===== FECHA: UI nativa -> salida FECHA (dd/mm/aaaa) =====
+    // ===== FECHA =====
     const fechaUi = $("#fecha-ui");
     const fechaOut = $("#FECHA");
     const setFechaOut = () => {
@@ -457,15 +402,14 @@
     const grupoC = $("#grupoParteC");
     const placeholdersWrap = $("#placeholdersWrap");
 
-    // ===== Cargar Materias =====
+    // Materias
     materias.forEach(m => {
       const opt = document.createElement("option");
       opt.value = m; opt.textContent = m;
       selMateria.appendChild(opt);
     });
 
-    // ====== Google Sheets (Columna A) ======
-    // Configura aquí tu hoja (CSV público)
+    // ======= Google Sheets (Columna A) =======
     const SHEET_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwKa8Ror8z-Ogwn6ejP72NCcylbuIFZH_9pb3QygPiRN3VWIeWKGy0j3pxohuXSURgUSB-drFqrENM/pub?gid=1640588024&single=true&output=csv";
     const GVIZ_URL =
@@ -491,21 +435,41 @@
       if(list.length && looksLikeHeader(list[0])) list = list.slice(1);
       return Array.from(new Set(list)).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
     };
-    const fillSelect = ($sel, items, roleText) => {
-      $sel.innerHTML = "";
-      const first = document.createElement("option");
-      first.value = "";
-      first.selected = true;
-      first.disabled = true;
-      first.textContent = roleText ? `Selecciona… (Rol: ${roleText})` : "Selecciona…";
-      $sel.appendChild(first);
-      for(const v of items){
-        const op = document.createElement("option");
-        op.value = v; op.textContent = v;
-        $sel.appendChild(op);
+
+    // Rellena SELECT o INPUT[list] de forma transparente
+    const fillPicker = ($el, items, roleText) => {
+      if(!$el) return;
+      if ($el.tagName === "SELECT") {
+        $el.innerHTML = "";
+        const first = document.createElement("option");
+        first.value = "";
+        first.selected = true;
+        first.disabled = true;
+        first.textContent = roleText ? `Selecciona… (Rol: ${roleText})` : "Selecciona…";
+        $el.appendChild(first);
+        for(const v of items){
+          const op = document.createElement("option");
+          op.value = v; op.textContent = v;
+          $el.appendChild(op);
+        }
+        $el.disabled = false;
+      } else {
+        // INPUT con datalist
+        const listId = $el.getAttribute("list");
+        const $dl = document.getElementById(listId);
+        if ($dl) {
+          $dl.innerHTML = "";
+          for(const v of items){
+            const op = document.createElement("option");
+            op.value = v;
+            $dl.appendChild(op);
+          }
+        }
+        $el.placeholder = roleText ? `Buscar… (Rol: ${roleText})` : "Buscar…";
+        $el.disabled = false;
       }
-      $sel.disabled = false;
     };
+
     async function loadNamesFromSheet(){
       try{
         const r = await fetch(SHEET_CSV_URL, {mode:'cors', cache:'no-store'});
@@ -529,20 +493,23 @@
     (async () => {
       try{
         LISTA_NOMBRES = await loadNamesFromSheet();
-        fillSelect(parteA, LISTA_NOMBRES, null);
-        fillSelect(parteB, LISTA_NOMBRES, null);
-        fillSelect(parteC, LISTA_NOMBRES, null);
-        wireSearchBoxes();               // ← añade esta línea
+        fillPicker(parteA, LISTA_NOMBRES, null);
+        fillPicker(parteB, LISTA_NOMBRES, null);
+        fillPicker(parteC, LISTA_NOMBRES, null);
       }catch(err){
         console.error(err);
-        [parteA, parteB, parteC].forEach($s=>{
-          $s.innerHTML = '<option value="" selected disabled>Error al cargar</option>';
-          $s.disabled = true;
+        [parteA, parteB, parteC].forEach($el=>{
+          if($el.tagName==="SELECT"){
+            $el.innerHTML = '<option value="" selected disabled>Error al cargar</option>';
+          }else{
+            $el.placeholder = "Error al cargar";
+          }
+          $el.disabled = true;
         });
       }
     })();
 
-    // ===== Eventos =====
+    // Eventos
     selMateria.addEventListener("change", () => {
       selTipo.innerHTML = '<option value="" selected disabled>Selecciona el contrato</option>';
       selTipo.disabled = false;
@@ -566,17 +533,15 @@
       hintA.textContent = roles.A ? `Rol: ${roles.A}` : "";
       hintB.textContent = roles.B ? `Rol: ${roles.B}` : "";
 
-      fillSelect(parteA, LISTA_NOMBRES, roles.A || null);
-      fillSelect(parteB, LISTA_NOMBRES, roles.B || null);
+      fillPicker(parteA, LISTA_NOMBRES, roles.A || null);
+      fillPicker(parteB, LISTA_NOMBRES, roles.B || null);
 
       if(roles.C){
         grupoC.style.display = "";
         parteC.required = true;
         hintC.textContent = `Rol: ${roles.C}`;
-        fillSelect(parteC, LISTA_NOMBRES, roles.C);
-      }
-
-      else{
+        fillPicker(parteC, LISTA_NOMBRES, roles.C);
+      }else{
         grupoC.style.display = "none";
         parteC.required = false;
         parteC.value = "";
@@ -592,22 +557,22 @@
       return (contratosPorMateria[mat] || []).find(c => c.CONTRATO === nombre);
     }
     function resetPartes(){
-      [parteA, parteB, parteC].forEach($s=>{
-        if($s.tagName === "SELECT"){ $s.selectedIndex = 0; } else { $s.value = ""; }
+      [parteA, parteB, parteC].forEach($el=>{
+        $el.value = "";
+        if($el.tagName === "SELECT"){ $el.selectedIndex = 0; }
       });
       hintA.textContent = ""; hintB.textContent = ""; hintC.textContent = "";
       parteC.required = false; grupoC.style.display = "none";
     }
     function resetPlaceholders(){ placeholdersWrap.innerHTML = ""; }
 
-    // ====== Placeholders dinámicos ======
+    // Placeholders dinámicos
     function renderPlaceholders(map){
       placeholdersWrap.innerHTML = "";
       const grid = document.createElement("div");
       grid.className = "grid";
       placeholdersWrap.appendChild(grid);
 
-      // MONTO + MONEDA
       if (map["MONTO"]) {
         grid.insertAdjacentHTML(
           "beforeend",
@@ -628,7 +593,6 @@
         );
       }
 
-      // TASA + PERIODO
       if (map["TASA"]) {
         grid.insertAdjacentHTML(
           "beforeend",
@@ -678,7 +642,7 @@
       });
     }
 
-    // Asegura FECHA antes de enviar
+    // FECHA antes de enviar
     document.getElementById("formContratos").addEventListener("submit", setFechaOut);
   </script>
 </body>
