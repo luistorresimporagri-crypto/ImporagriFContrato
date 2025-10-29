@@ -12,6 +12,9 @@
       --shadow: 0 6px 28px rgba(13, 34, 58, .08);
       --shadow-sm: 0 2px 10px rgba(13,34,58,.06);
       --ok:#1B5E20; --err:#B00020;
+      --subtitulo-size: 13px;
+      --subtitulo-weight: 800;
+      --subtitulo-color: #263645;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -21,7 +24,6 @@
       min-height:100dvh;
     }
 
-    /* --- Tarjeta y adornos --- */
     .card{
       background:var(--card);
       border:1px solid var(--borde);
@@ -37,7 +39,6 @@
       background:linear-gradient(90deg, var(--azul), var(--verde));
     }
 
-    /* --- Difuminado inferior azul+verde (decorativo) --- */
     .bottom-glow{
       position:fixed; left:0; right:0; bottom:-20px; height:260px; pointer-events:none; z-index:0;
       background:
@@ -47,7 +48,6 @@
       filter: blur(10px) saturate(1.05);
     }
 
-    /* --- Layout --- */
     .wrap{max-width:980px;margin:48px auto;padding:0 20px; position:relative; z-index:1;}
     .header{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
     .badge{
@@ -66,8 +66,17 @@
     .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .divider{height:1px;background:var(--borde);margin:8px 0 8px 0}
 
-    /* --- Inputs & selects --- */
-    label{font-size:14px;color:#304154;font-weight:700;margin-bottom:6px;display:block}
+    label,
+    .clause-title,
+    .section h3{
+      font-family: inherit;
+      font-size: var(--subtitulo-size);
+      font-weight: var(--subtitulo-weight);
+      color: var(--subtitulo-color);
+      margin-bottom: 8px;
+    }
+    .section h3{ margin-top: 2px; }
+
     .input{
       width:100%;height:var(--input-h);padding:0 14px;border:1px solid var(--borde);
       border-radius:12px;outline:none;background:#fff;color:var(--texto);
@@ -81,7 +90,6 @@
       background-repeat:no-repeat;background-position:right 10px center;background-size:18px 18px;padding-right:40px}
     textarea.input{min-height:110px;padding-top:10px;padding-bottom:10px;resize:vertical}
 
-    /* --- Radios custom --- */
     .radios{display:flex;gap:16px;flex-wrap:wrap}
     .radios label{
       display:flex;align-items:center;gap:10px;font-weight:600;color:#304154;
@@ -100,7 +108,6 @@
     .radios input[type="radio"]:checked{border-color:var(--azul)}
     .radios input[type="radio"]:checked::before{transform:scale(1)}
 
-    /* --- Botones --- */
     .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
     .btn{
       height:44px;padding:0 18px;border:0;border-radius:12px;font-weight:800;letter-spacing:.02em;
@@ -115,51 +122,26 @@
     .btn-prim:hover{filter:saturate(1.05) brightness(1.02)}
     .btn-prim:focus-visible{outline:3px solid rgba(0,102,161,.25)}
 
-    /* --- Secciones --- */
     .section { background:#ffffffcc; border:1px solid #e6eef5; border-radius:14px; padding:18px; box-shadow:var(--shadow-sm) }
     .section h3 { margin:0 0 6px; font-size:16px; color:#304154 }
     .clauses .group { padding:12px 0; border-top:1px solid #eef3f7; }
     .clauses .group:first-child { border-top:0; }
     .clause-title { display:block; font-weight:800; color:#263645; margin-bottom:8px; }
 
-    /* --- Footer/status --- */
     .footer-note{margin-top:14px;font-size:12px;color:var(--muted);text-align:right}
     .status-ok{color:var(--ok)} .status-err{color:var(--err)}
 
-    /* --- Accesibilidad & estados nativos --- */
     .input:invalid{border-color:#ffdddd}
     .input:invalid:focus{box-shadow:0 0 0 4px rgba(255, 64, 64, .15)}
 
-    /* --- Responsive --- */
     @media (max-width:700px){
       .row-2{grid-template-columns:1fr}
       .actions{flex-direction:column-reverse;align-items:stretch}
       .btn{width:100%}
     }
-    /* ===== Unificar estilo de subtítulos ===== */
-    :root{
-      --subtitulo-size: 13px;
-      --subtitulo-weight: 800;
-      --subtitulo-color: #263645;
-    }
-
-    /* Aplica a: labels de campos, títulos de cláusulas y subtítulos de secciones */
-    label,
-    .clause-title,
-    .section h3{
-      font-family: inherit;
-      font-size: var(--subtitulo-size);
-      font-weight: var(--subtitulo-weight);
-      color: var(--subtitulo-color);
-      margin-bottom: 8px;
-    }
-
-    /* (opcional) si quieres un pelín más de separación arriba de los h3 */
-    .section h3{ margin-top: 2px; }
   </style>
 </head>
 <body>
-  <!-- Decorado difuminado inferior -->
   <div class="bottom-glow" aria-hidden="true"></div>
 
   <main class="wrap">
@@ -176,7 +158,7 @@
           accept-charset="UTF-8">
 
       <div class="grid" id="form-grid">
-        <!-- FECHA (UI nativa, salida como dd/mm/aaaa en campo oculto FECHA) -->
+        <!-- FECHA -->
         <div>
           <label for="fecha-ui">FECHA</label>
           <input id="fecha-ui" class="input" type="date" required />
@@ -201,7 +183,7 @@
           </div>
         </div>
 
-        <!-- PARTES (ahora con listas desde Google Sheets) -->
+        <!-- PARTES (desde Google Sheets) -->
         <div class="row-2">
           <div>
             <label for="parteA">NOMBRE DE LA PARTE A</label>
@@ -218,7 +200,6 @@
             <div class="hint" id="hintB"></div>
           </div>
         </div>
-
         <div id="grupoParteC" style="display:none">
           <label for="parteC">NOMBRE DE LA PARTE C</label>
           <select id="parteC" name="PARTE_C_NOMBRE" class="input" disabled>
@@ -227,6 +208,7 @@
           <div class="hint" id="hintC"></div>
         </div>
 
+        <div class="divider"></div>
 
         <!-- PLACEHOLDERS DINÁMICOS -->
         <div id="placeholdersWrap"></div>
@@ -236,7 +218,6 @@
       <div class="divider"></div>
 
       <div class="clauses">
-        <!-- NO COMPETENCIA -->
         <div class="group">
           <label class="clause-title" for="NO_COMPETENCIA">NO COMPETENCIA</label>
           <select id="NO_COMPETENCIA" name="NO_COMPETENCIA" class="input" required>
@@ -246,7 +227,6 @@
           </select>
         </div>
 
-        <!-- NO SOLICITACIÓN -->
         <div class="group">
           <label class="clause-title" for="NO_SOLICITACION">NO SOLICITACIÓN</label>
           <select id="NO_SOLICITACION" name="NO_SOLICITACION" class="input" required>
@@ -256,7 +236,6 @@
           </select>
         </div>
 
-        <!-- CONFIDENCIALIDAD -->
         <div class="group">
           <label class="clause-title" for="CONFIDENCIALIDAD_OPCIONAL">CONFIDENCIALIDAD</label>
           <select id="CONFIDENCIALIDAD_OPCIONAL" name="CONFIDENCIALIDAD_OPCIONAL" class="input" required>
@@ -266,7 +245,6 @@
           </select>
         </div>
 
-        <!-- EXCLUSIVIDAD -->
         <div class="group">
           <label class="clause-title" for="EXCLUSIVIDAD">EXCLUSIVIDAD</label>
           <select id="EXCLUSIVIDAD" name="EXCLUSIVIDAD" class="input" required>
@@ -276,7 +254,6 @@
           </select>
         </div>
 
-        <!-- MEDIACIÓN Y ARBITRAJE -->
         <div class="group">
           <label class="clause-title" for="MEDIACION_ARBITRAJE">MEDIACIÓN Y ARBITRAJE</label>
           <select id="MEDIACION_ARBITRAJE" name="MEDIACION_ARBITRAJE" class="input" required>
@@ -285,7 +262,7 @@
             <option value="NO">NO</option>
           </select>
         </div>
-        <!-- FIRMA -->
+
         <div class="group">
           <label class="clause-title" for="FIRMA">FIRMA</label>
           <select id="FIRMA" name="FIRMA" class="input" required>
@@ -295,6 +272,7 @@
           </select>
         </div>
       </div>
+
       <section class="section" style="margin-top:14px">
         <h3>CLÁUSULA PERSONALIZADA</h3>
         <p class="hint">Opcional. Agrega cualquier cláusula adicional que deba incluirse.</p>
@@ -304,6 +282,7 @@
           class="input textarea-lg"
           placeholder="Escribe aquí la cláusula personalizada (puede agregar texto largo)…"></textarea>
       </section>
+
       <div class="actions">
         <button class="btn btn-sec" type="reset" style="margin-right:auto; font-size: 15px">Borrar</button>
         <button class="btn btn-prim" type="submit" style="height:52px;padding:0 28px;font-size:15px;min-width:140px">Enviar</button>
@@ -313,7 +292,7 @@
     </form>
   </main>
 
-  <!-- Catálogo ORIGINAL integrado (roles + placeholders) -->
+  <!-- Catálogo de contratos/roles/placeholders -->
   <script>
     const __jsonCompleto = {"materias":["CIVIL","MERCANTIL","LABORAL","OTROS"],"contratosPorMateria":{
 "CIVIL":[
@@ -376,8 +355,9 @@
 }};
   </script>
 
+  <!-- Lógica -->
   <script>
-    // ====== Helpers ======
+    // ===== Helpers cortos =====
     const $ = (s, c=document) => c.querySelector(s);
     const statusEl = $("#status");
     const pad2 = n => String(n).padStart(2,"0");
@@ -386,7 +366,7 @@
       return `${pad2(d)}/${pad2(m)}/${y}`;
     };
 
-    // ====== FECHA: UI nativa -> salida FECHA (dd/mm/aaaa) ======
+    // ===== FECHA: UI nativa -> salida FECHA (dd/mm/aaaa) =====
     const fechaUi = $("#fecha-ui");
     const fechaOut = $("#FECHA");
     const setFechaOut = () => {
@@ -394,7 +374,6 @@
       fechaOut.value = toDDMMYYYY(fechaUi.value);
       statusEl.textContent = `Fecha: ${fechaOut.value}`;
     };
-    // Inicializa con hoy
     (() => {
       const now = new Date();
       fechaUi.value = `${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
@@ -402,12 +381,12 @@
     })();
     fechaUi.addEventListener("change", setFechaOut);
 
-    // ====== DATA ======
+    // ===== DATA =====
     const DATA_FULL = __jsonCompleto;
     const materias = DATA_FULL.materias;
     const contratosPorMateria = DATA_FULL.contratosPorMateria;
 
-    // ====== DOM ======
+    // ===== DOM =====
     const selMateria = $("#materia");
     const selTipo = $("#tipo");
     const parteA = $("#parteA");
@@ -419,84 +398,91 @@
     const grupoC = $("#grupoParteC");
     const placeholdersWrap = $("#placeholdersWrap");
 
-    // ====== Cargar Materias ======
+    // ===== Cargar Materias =====
     materias.forEach(m => {
       const opt = document.createElement("option");
       opt.value = m; opt.textContent = m;
       selMateria.appendChild(opt);
     });
 
-    <script>
-      /* ===== Configura aquí tu hoja =====
-         Usa SIEMPRE el endpoint CSV público. Cambia el gid si ocupas otra hoja. */
-      const SHEET_CSV_URL =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwKa8Ror8z-Ogwn6ejP72NCcylbuIFZH_9pb3QygPiRN3VWIeWKGy0j3pxohuXSURgUSB-drFqrENM/pub?gid=1640588024&single=true&output=csv";
+    // ====== Google Sheets (Columna A) ======
+    // Configura aquí tu hoja (CSV público)
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwKa8Ror8z-Ogwn6ejP72NCcylbuIFZH_9pb3QygPiRN3VWIeWKGy0j3pxohuXSURgUSB-drFqrENM/pub?gid=1640588024&single=true&output=csv";
+    const GVIZ_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwKa8Ror8z-Ogwn6ejP72NCcylbuIFZH_9pb3QygPiRN3VWIeWKGy0j3pxohuXSURgUSB-drFqrENM/gviz/tq?gid=1640588024&tqx=out:json";
 
-      const GVIZ_URL =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwKa8Ror8z-Ogwn6ejP72NCcylbuIFZH_9pb3QygPiRN3VWIeWKGy0j3pxohuXSURgUSB-drFqrENM/gviz/tq?gid=1640588024&tqx=out:json";
-
-      const parseCSVFirstColumn = (csvText) => {
-        const rows = [];
-        let cur = "", inQ = false, row=[];
-        const pc=()=>{row.push(cur);cur=""}; const pr=()=>{rows.push(row);row=[]};
-        for(let i=0;i<csvText.length;i++){
-          const c=csvText[i], n=csvText[i+1];
-          if(c==='\"'){ if(inQ && n==='\"'){cur+='\"'; i++;} else inQ=!inQ; }
-          else if(c===',' && !inQ){ pc(); }
-          else if((c==='\n'||c==='\r') && !inQ){ pc(); pr(); if(c==='\r'&&n==='\n') i++; }
-          else cur+=c;
-        }
-        if(cur.length||row.length){ pc(); pr(); }
-        return rows.map(r=>r[0]??"");
-      };
-
-      const looksLikeHeader = s => /nombre|raz[oó]n/.test(String(s).toLowerCase());
-      const normalizeList = (arr) => {
-        let list = arr.map(x=>String(x??"").trim()).filter(Boolean);
-        if(list.length && looksLikeHeader(list[0])) list = list.slice(1);
-        return Array.from(new Set(list)).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-      };
-
-      const fillSelect = ($sel, items, roleText) => {
-        $sel.innerHTML = "";
-        const first = document.createElement("option");
-        first.value = "";
-        first.selected = true;
-        first.disabled = true;
-        first.textContent = roleText ? `Selecciona… (Rol: ${roleText})` : "Selecciona…";
-        $sel.appendChild(first);
-
-        for(const v of items){
-          const op = document.createElement("option");
-          op.value = v; op.textContent = v;
-          $sel.appendChild(op);
-        }
-        $sel.disabled = false;
-      };
-
-      async function loadNamesFromSheet(){
-        // 1) CSV
-        try{
-          const r = await fetch(SHEET_CSV_URL, {mode:'cors', cache:'no-store'});
-          if(!r.ok) throw new Error("CSV HTTP "+r.status);
-          const text = await r.text();
-          const colA = parseCSVFirstColumn(text);
-          const list = normalizeList(colA);
-          if(list.length) return list;
-        }catch(e){ console.warn("CSV falló, probando GVIZ:", e); }
-
-        // 2) Fallback GVIZ
-        const r2 = await fetch(GVIZ_URL, {mode:'cors', cache:'no-store'});
-        if(!r2.ok) throw new Error("GVIZ HTTP "+r2.status);
-        const raw = await r2.text();
-        const json = JSON.parse(raw.replace(/^[\s\S]*setResponse\(/,'').replace(/\)\s*;?\s*$/,''));
-        const rows = json.table?.rows ?? [];
-        const colA = rows.map(x=> (x.c?.[0]?.v ?? ""));
-        return normalizeList(colA);
+    const parseCSVFirstColumn = (csvText) => {
+      const rows = [];
+      let cur = "", inQ = false, row=[];
+      const pc=()=>{row.push(cur);cur=""}; const pr=()=>{rows.push(row);row=[]};
+      for(let i=0;i<csvText.length;i++){
+        const c=csvText[i], n=csvText[i+1];
+        if(c==='\"'){ if(inQ && n==='\"'){cur+='\"'; i++;} else inQ=!inQ; }
+        else if(c===',' && !inQ){ pc(); }
+        else if((c==='\n'||c==='\r') && !inQ){ pc(); pr(); if(c==='\r'&&n==='\n') i++; }
+        else cur+=c;
       }
-    </script>
+      if(cur.length||row.length){ pc(); pr(); }
+      return rows.map(r=>r[0]??"");
+    };
+    const looksLikeHeader = s => /nombre|raz[oó]n/.test(String(s).toLowerCase());
+    const normalizeList = (arr) => {
+      let list = arr.map(x=>String(x??"").trim()).filter(Boolean);
+      if(list.length && looksLikeHeader(list[0])) list = list.slice(1);
+      return Array.from(new Set(list)).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+    };
+    const fillSelect = ($sel, items, roleText) => {
+      $sel.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.selected = true;
+      first.disabled = true;
+      first.textContent = roleText ? `Selecciona… (Rol: ${roleText})` : "Selecciona…";
+      $sel.appendChild(first);
+      for(const v of items){
+        const op = document.createElement("option");
+        op.value = v; op.textContent = v;
+        $sel.appendChild(op);
+      }
+      $sel.disabled = false;
+    };
+    async function loadNamesFromSheet(){
+      try{
+        const r = await fetch(SHEET_CSV_URL, {mode:'cors', cache:'no-store'});
+        if(!r.ok) throw new Error("CSV HTTP "+r.status);
+        const text = await r.text();
+        const colA = parseCSVFirstColumn(text);
+        const list = normalizeList(colA);
+        if(list.length) return list;
+      }catch(e){ console.warn("CSV falló, probando GVIZ:", e); }
+      const r2 = await fetch(GVIZ_URL, {mode:'cors', cache:'no-store'});
+      if(!r2.ok) throw new Error("GVIZ HTTP "+r2.status);
+      const raw = await r2.text();
+      const json = JSON.parse(raw.replace(/^[\s\S]*setResponse\(/,'').replace(/\)\s*;?\s*$/,''));
+      const rows = json.table?.rows ?? [];
+      const colA = rows.map(x=> (x.c?.[0]?.v ?? ""));
+      return normalizeList(colA);
+    }
 
-    // ====== Eventos ======
+    // Carga inicial de nombres
+    let LISTA_NOMBRES = [];
+    (async () => {
+      try{
+        LISTA_NOMBRES = await loadNamesFromSheet();
+        fillSelect(parteA, LISTA_NOMBRES, null);
+        fillSelect(parteB, LISTA_NOMBRES, null);
+        fillSelect(parteC, LISTA_NOMBRES, null);
+      }catch(err){
+        console.error(err);
+        [parteA, parteB, parteC].forEach($s=>{
+          $s.innerHTML = '<option value="" selected disabled>Error al cargar</option>';
+          $s.disabled = true;
+        });
+      }
+    })();
+
+    // ===== Eventos =====
     selMateria.addEventListener("change", () => {
       selTipo.innerHTML = '<option value="" selected disabled>Selecciona el contrato</option>';
       selTipo.disabled = false;
@@ -519,163 +505,7 @@
       const roles = cto.PARTES || {};
       hintA.textContent = roles.A ? `Rol: ${roles.A}` : "";
       hintB.textContent = roles.B ? `Rol: ${roles.B}` : "";
-      parteA.placeholder = roles.A || "";
-      parteB.placeholder = roles.B || "";
-      if(roles.C){
-        grupoC.style.display = "";
-        parteC.required = true;
-        hintC.textContent = `Rol: ${roles.C}`;
-        parteC.placeholder = roles.C || "";
-      }else{
-        grupoC.style.display = "none";
-        parteC.required = false;
-        parteC.value = "";
-        hintC.textContent = "";
-      }
 
-      renderPlaceholders(cto.PLACEHOLDERS || {});
-          });
-
-          function getContratoActual(){
-            const mat = selMateria.value;
-            const nombre = selTipo.value;
-            return (contratosPorMateria[mat] || []).find(c => c.CONTRATO === nombre);
-          }
-          function resetPartes(){
-            parteA.value = ""; parteB.value = ""; parteC.value = "";
-            hintA.textContent = ""; hintB.textContent = ""; hintC.textContent = "";
-            parteC.required = false; grupoC.style.display = "none";
-            parteA.placeholder = ""; parteB.placeholder = ""; parteC.placeholder = "";
-          }
-          function resetPlaceholders(){ placeholdersWrap.innerHTML = ""; }
-
-          // ====== Placeholders dinámicos ======
-          const NOMBRES_PLACE = [
-            "BIENES_A","BIENES_B","DESCRIPCION_CONFIDENCIAL","MONTO","PUESTO",
-            "SERVICIO_PRODUCTO_DERECHO_OBLIGACION","SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B","TASA"
-          ];
-
-          function renderPlaceholders(map){
-        placeholdersWrap.innerHTML = "";
-
-        const grid = document.createElement("div");
-        grid.className = "grid";
-        placeholdersWrap.appendChild(grid);
-
-        /* 1) MONTO + MONEDA (misma fila) */
-        if (map["MONTO"]) {
-          grid.insertAdjacentHTML(
-            "beforeend",
-            `<div class="row-2">
-               <div>
-                 <label for="MONTO">MONTO</label>
-                 <input id="MONTO" name="MONTO" class="input" type="text" required />
-               </div>
-               <div>
-                 <label for="MONEDA">MONEDA</label>
-                 <select id="MONEDA" name="MONEDA" class="input" required>
-                   <option value="" selected disabled>Selecciona la moneda</option>
-                   <option value="MXN">MXN</option>
-                   <option value="USD">USD</option>
-                 </select>
-               </div>
-             </div>`
-          );
-        }
-
-        /* 2) TASA + PERIODO (misma fila) */
-        if (map["TASA"]) {
-          grid.insertAdjacentHTML(
-            "beforeend",
-            `<div class="row-2">
-               <div>
-                 <label for="TASA">TASA</label>
-                 <input id="TASA" name="TASA" class="input" type="text" required />
-               </div>
-               <div>
-                 <label for="PERIODO">PERIODO</label>
-                 <select id="PERIODO" name="PERIODO" class="input" required>
-                   <option value="" selected disabled>Selecciona el periodo</option>
-                   <option value="BIMESTRAL">BIMESTRAL</option>
-                   <option value="TRIMESTRAL">TRIMESTRAL</option>
-                   <option value="CUATRIMESTRAL">CUATRIMESTRAL</option>
-                   <option value="SEMESTRAL">SEMESTRAL</option>
-                   <option value="ANUAL">ANUAL</option>
-                 </select>
-               </div>
-             </div>`
-          );
-        }
-
-        /* 3) Resto de placeholders en orden estándar */
-        const ORDER = [
-          "BIENES_A","BIENES_B","DESCRIPCION_CONFIDENCIAL","PUESTO",
-          "SERVICIO_PRODUCTO_DERECHO_OBLIGACION","SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B"
-          // Omitimos MONTO y TASA porque ya los dibujamos arriba
-        ];
-
-        ORDER.forEach((name) => {
-          if (!map[name]) return;
-
-          if (name === "DESCRIPCION_CONFIDENCIAL") {
-            grid.insertAdjacentHTML(
-              "beforeend",
-              `<div>
-                 <label for="${name}">${name}</label>
-                 <textarea id="${name}" name="${name}" class="input" required></textarea>
-               </div>`
-            );
-          } else {
-            grid.insertAdjacentHTML(
-              "beforeend",
-              `<div>
-                 <label for="${name}">${name}</label>
-                 <input id="${name}" name="${name}" class="input" type="text" required />
-               </div>`
-            );
-          }
-        });
-      }
-    // Asegura fecha de salida antes de enviar
-    document.getElementById("formContratos").addEventListener("submit", () => {
-      setFechaOut();
-    });
-  </script>
-
-  <script>
-    let LISTA_NOMBRES = [];
-
-    // Carga inicial de nombres para A/B/C
-    (async () => {
-      try{
-        LISTA_NOMBRES = await loadNamesFromSheet();
-        // Prellenar mientras no se seleccione contrato (sin rol)
-        fillSelect(parteA, LISTA_NOMBRES, null);
-        fillSelect(parteB, LISTA_NOMBRES, null);
-        fillSelect(parteC, LISTA_NOMBRES, null); // se mostrará solo si aplica
-      }catch(err){
-        console.error(err);
-        // Muestra algo legible si falla
-        [parteA, parteB, parteC].forEach($s=>{
-          $s.innerHTML = '<option value="" selected disabled>Error al cargar</option>';
-          $s.disabled = true;
-        });
-      }
-    })();
-
-    // === Dentro de tu handler existente ===
-    selTipo.addEventListener("change", () => {
-      resetPartes();
-      resetPlaceholders();
-      const cto = getContratoActual();
-      if(!cto) return;
-
-      const roles = cto.PARTES || {};
-      // Pistas visuales de rol
-      hintA.textContent = roles.A ? `Rol: ${roles.A}` : "";
-      hintB.textContent = roles.B ? `Rol: ${roles.B}` : "";
-
-      // Rellena selects con etiqueta de rol en el primer option
       fillSelect(parteA, LISTA_NOMBRES, roles.A || null);
       fillSelect(parteB, LISTA_NOMBRES, roles.B || null);
 
@@ -694,20 +524,100 @@
       renderPlaceholders(cto.PLACEHOLDERS || {});
     });
 
+    function getContratoActual(){
+      const mat = selMateria.value;
+      const nombre = selTipo.value;
+      return (contratosPorMateria[mat] || []).find(c => c.CONTRATO === nombre);
+    }
     function resetPartes(){
-      // resetea selects a estado “Selecciona…”
       [parteA, parteB, parteC].forEach($s=>{
-        if($s.tagName === "SELECT"){
-          $s.selectedIndex = 0;
-        }else{
-          $s.value = "";
-        }
+        if($s.tagName === "SELECT"){ $s.selectedIndex = 0; } else { $s.value = ""; }
       });
       hintA.textContent = ""; hintB.textContent = ""; hintC.textContent = "";
       parteC.required = false; grupoC.style.display = "none";
     }
+    function resetPlaceholders(){ placeholdersWrap.innerHTML = ""; }
+
+    // ====== Placeholders dinámicos ======
+    function renderPlaceholders(map){
+      placeholdersWrap.innerHTML = "";
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      placeholdersWrap.appendChild(grid);
+
+      // MONTO + MONEDA
+      if (map["MONTO"]) {
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `<div class="row-2">
+             <div>
+               <label for="MONTO">MONTO</label>
+               <input id="MONTO" name="MONTO" class="input" type="text" required />
+             </div>
+             <div>
+               <label for="MONEDA">MONEDA</label>
+               <select id="MONEDA" name="MONEDA" class="input" required>
+                 <option value="" selected disabled>Selecciona la moneda</option>
+                 <option value="MXN">MXN</option>
+                 <option value="USD">USD</option>
+               </select>
+             </div>
+           </div>`
+        );
+      }
+
+      // TASA + PERIODO
+      if (map["TASA"]) {
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `<div class="row-2">
+             <div>
+               <label for="TASA">TASA</label>
+               <input id="TASA" name="TASA" class="input" type="text" required />
+             </div>
+             <div>
+               <label for="PERIODO">PERIODO</label>
+               <select id="PERIODO" name="PERIODO" class="input" required>
+                 <option value="" selected disabled>Selecciona el periodo</option>
+                 <option value="BIMESTRAL">BIMESTRAL</option>
+                 <option value="TRIMESTRAL">TRIMESTRAL</option>
+                 <option value="CUATRIMESTRAL">CUATRIMESTRAL</option>
+                 <option value="SEMESTRAL">SEMESTRAL</option>
+                 <option value="ANUAL">ANUAL</option>
+               </select>
+             </div>
+           </div>`
+        );
+      }
+
+      const ORDER = [
+        "BIENES_A","BIENES_B","DESCRIPCION_CONFIDENCIAL","PUESTO",
+        "SERVICIO_PRODUCTO_DERECHO_OBLIGACION","SERVICIO_PRODUCTO_DERECHO_OBLIGACION_B"
+      ];
+      ORDER.forEach((name) => {
+        if (!map[name]) return;
+        if (name === "DESCRIPCION_CONFIDENCIAL") {
+          grid.insertAdjacentHTML(
+            "beforeend",
+            `<div>
+               <label for="${name}">${name}</label>
+               <textarea id="${name}" name="${name}" class="input" required></textarea>
+             </div>`
+          );
+        } else {
+          grid.insertAdjacentHTML(
+            "beforeend",
+            `<div>
+               <label for="${name}">${name}</label>
+               <input id="${name}" name="${name}" class="input" type="text" required />
+             </div>`
+          );
+        }
+      });
+    }
+
+    // Asegura FECHA antes de enviar
+    document.getElementById("formContratos").addEventListener("submit", setFechaOut);
   </script>
-
-
 </body>
 </html>
