@@ -90,24 +90,6 @@
       background-repeat:no-repeat;background-position:right 10px center;background-size:18px 18px;padding-right:40px}
     textarea.input{min-height:110px;padding-top:10px;padding-bottom:10px;resize:vertical}
 
-    .radios{display:flex;gap:16px;flex-wrap:wrap}
-    .radios label{
-      display:flex;align-items:center;gap:10px;font-weight:600;color:#304154;
-      background:#fff;border:1px solid #e9eef5;border-radius:999px;padding:8px 12px;
-      cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .08s ease, box-shadow .15s ease;
-    }
-    .radios label:hover{box-shadow:0 6px 20px rgba(0,0,0,.06)}
-    .radios input[type="radio"]{
-      appearance:none;width:18px;height:18px;border:2px solid #90a4b4;border-radius:50%;display:inline-grid;
-      place-items:center;transition:border-color .15s ease, background .15s ease;
-    }
-    .radios input[type="radio"]::before{
-      content:""; width:10px; height:10px; border-radius:50%; transform:scale(0);
-      transition:transform .12s ease; background:linear-gradient(90deg,var(--azul),var(--verde));
-    }
-    .radios input[type="radio"]:checked{border-color:var(--azul)}
-    .radios input[type="radio"]:checked::before{transform:scale(1)}
-
     .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
     .btn{
       height:44px;padding:0 18px;border:0;border-radius:12px;font-weight:800;letter-spacing:.02em;
@@ -139,6 +121,28 @@
       .actions{flex-direction:column-reverse;align-items:stretch}
       .btn{width:100%}
     }
+
+    /* ===== Combo buscable personalizado ===== */
+    .combo{position:relative}
+    .combo-input{
+      width:100%; height:var(--input-h); padding:0 14px; border:1px solid var(--borde);
+      border-radius:12px; background:#fff; color:var(--texto); outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .combo-input:focus{box-shadow:var(--focus); border-color:var(--azul)}
+    .combo-list{
+      position:absolute; z-index:20; left:0; right:0; top:calc(100% + 6px);
+      background:#fff; border:1px solid var(--borde); border-radius:12px;
+      box-shadow:var(--shadow); max-height:260px; overflow:auto; padding:6px; display:none;
+    }
+    .combo.open .combo-list{display:block}
+    .combo-item{
+      padding:10px 12px; border-radius:10px; cursor:pointer; user-select:none;
+    }
+    .combo-item:hover, .combo-item.active{background:#f3f7fb}
+    .combo-empty{
+      padding:10px 12px; color:var(--muted); font-size:13px;
+    }
   </style>
 </head>
 <body>
@@ -155,7 +159,8 @@
           class="card"
           action="https://luimporagri.app.n8n.cloud/webhook-test/form-netlify"
           method="POST"
-          accept-charset="UTF-8">
+          accept-charset="UTF-8"
+          autocomplete="off">
 
       <div class="grid" id="form-grid">
         <!-- FECHA -->
@@ -183,32 +188,43 @@
           </div>
         </div>
 
-        <!-- PARTES con buscador integrado (datalist) -->
+        <!-- PARTES con combo buscable + anti-autofill -->
         <div class="row-2">
           <div>
             <label for="parteA">NOMBRE DE LA PARTE A</label>
-            <input id="parteA" name="PARTE_A_NOMBRE" class="input" type="text"
-                   placeholder="Buscar…"
-                   list="namesA" required disabled />
-            <datalist id="namesA"></datalist>
+            <!-- dummy anti-autofill -->
+            <input type="text" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" tabindex="-1" />
+            <div class="combo" id="comboA">
+              <input id="parteA" name="PARTE_A_NOMBRE" class="combo-input"
+                     type="text" placeholder="Buscar…"
+                     autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" disabled />
+              <div class="combo-list" role="listbox" aria-label="Sugerencias Parte A"></div>
+            </div>
             <div class="hint" id="hintA"></div>
           </div>
+
           <div>
             <label for="parteB">NOMBRE DE LA PARTE B</label>
-            <input id="parteB" name="PARTE_B_NOMBRE" class="input" type="text"
-                   placeholder="Buscar…"
-                   list="namesB" required disabled />
-            <datalist id="namesB"></datalist>
+            <input type="text" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" tabindex="-1" />
+            <div class="combo" id="comboB">
+              <input id="parteB" name="PARTE_B_NOMBRE" class="combo-input"
+                     type="text" placeholder="Buscar…"
+                     autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" disabled />
+              <div class="combo-list" role="listbox" aria-label="Sugerencias Parte B"></div>
+            </div>
             <div class="hint" id="hintB"></div>
           </div>
         </div>
 
         <div id="grupoParteC" style="display:none">
           <label for="parteC">NOMBRE DE LA PARTE C</label>
-          <input id="parteC" name="PARTE_C_NOMBRE" class="input" type="text"
-                 placeholder="Buscar…"
-                 list="namesC" disabled />
-          <datalist id="namesC"></datalist>
+          <input type="text" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" tabindex="-1" />
+          <div class="combo" id="comboC">
+            <input id="parteC" name="PARTE_C_NOMBRE" class="combo-input"
+                   type="text" placeholder="Buscar…"
+                   autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" disabled />
+            <div class="combo-list" role="listbox" aria-label="Sugerencias Parte C"></div>
+          </div>
           <div class="hint" id="hintC"></div>
         </div>
 
@@ -369,6 +385,8 @@
       const [y,m,d] = ymd.split("-").map(Number);
       return `${pad2(d)}/${pad2(m)}/${y}`;
     };
+    const norm = s => String(s||"").toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
     // ===== FECHA =====
     const fechaUi = $("#fecha-ui");
@@ -377,6 +395,7 @@
       if (!fechaUi.value) return;
       fechaOut.value = toDDMMYYYY(fechaUi.value);
       statusEl.textContent = `Fecha: ${fechaOut.value}`;
+      statusEl.className = "footer-note status-ok";
     };
     (() => {
       const now = new Date();
@@ -436,80 +455,119 @@
       return Array.from(new Set(list)).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
     };
 
-    // Rellena SELECT o INPUT[list] de forma transparente
-    const fillPicker = ($el, items, roleText) => {
-      if(!$el) return;
-      if ($el.tagName === "SELECT") {
-        $el.innerHTML = "";
-        const first = document.createElement("option");
-        first.value = "";
-        first.selected = true;
-        first.disabled = true;
-        first.textContent = roleText ? `Selecciona… (Rol: ${roleText})` : "Selecciona…";
-        $el.appendChild(first);
-        for(const v of items){
-          const op = document.createElement("option");
-          op.value = v; op.textContent = v;
-          $el.appendChild(op);
-        }
-        $el.disabled = false;
-      } else {
-        // INPUT con datalist
-        const listId = $el.getAttribute("list");
-        const $dl = document.getElementById(listId);
-        if ($dl) {
-          $dl.innerHTML = "";
-          for(const v of items){
-            const op = document.createElement("option");
-            op.value = v;
-            $dl.appendChild(op);
-          }
-        }
-        $el.placeholder = roleText ? `Buscar… (Rol: ${roleText})` : "Buscar…";
-        $el.disabled = false;
-      }
-    };
+    // ===== Combo buscable =====
+    function makeCombo(rootEl, options){
+      const input = rootEl.querySelector('.combo-input');
+      const list  = rootEl.querySelector('.combo-list');
+      let items = options.slice();
+      let filtered = [];
+      let activeIdx = -1;
 
-    async function loadNamesFromSheet(){
-      try{
-        const r = await fetch(SHEET_CSV_URL, {mode:'cors', cache:'no-store'});
-        if(!r.ok) throw new Error("CSV HTTP "+r.status);
-        const text = await r.text();
-        const colA = parseCSVFirstColumn(text);
-        const list = normalizeList(colA);
-        if(list.length) return list;
-      }catch(e){ console.warn("CSV falló, probando GVIZ:", e); }
-      const r2 = await fetch(GVIZ_URL, {mode:'cors', cache:'no-store'});
-      if(!r2.ok) throw new Error("GVIZ HTTP "+r2.status);
-      const raw = await r2.text();
-      const json = JSON.parse(raw.replace(/^[\s\S]*setResponse\(/,'').replace(/\)\s*;?\s*$/,''));
-      const rows = json.table?.rows ?? [];
-      const colA = rows.map(x=> (x.c?.[0]?.v ?? ""));
-      return normalizeList(colA);
+      const render = (arr) => {
+        list.innerHTML = '';
+        if(!arr.length){
+          list.innerHTML = `<div class="combo-empty">Sin coincidencias</div>`;
+          return;
+        }
+        const frag = document.createDocumentFragment();
+        arr.forEach((txt)=>{
+          const div = document.createElement('div');
+          div.className = 'combo-item';
+          div.setAttribute('role','option');
+          div.textContent = txt;
+          div.addEventListener('mousedown', e => { // mousedown para no perder foco
+            e.preventDefault();
+            input.value = txt;
+            close();
+          });
+          frag.appendChild(div);
+        });
+        list.appendChild(frag);
+      };
+
+      const open = () => { rootEl.classList.add('open'); };
+      const close = () => { rootEl.classList.remove('open'); activeIdx=-1; highlight(); };
+
+      const highlight = () => {
+        [...list.children].forEach((el,i)=>{
+          el.classList.toggle('active', i===activeIdx);
+        });
+      };
+
+      const doFilter = () => {
+        const q = norm(input.value);
+        filtered = !q ? items.slice(0,200)
+                      : items.filter(v => norm(v).includes(q)).slice(0,200);
+        render(filtered);
+        open();
+      };
+
+      input.addEventListener('input', doFilter);
+      input.addEventListener('focus', doFilter);
+      input.addEventListener('keydown', (e)=>{
+        const max = list.children.length - 1;
+        if(e.key==='ArrowDown'){ activeIdx = Math.min(max, activeIdx+1); highlight(); e.preventDefault(); }
+        else if(e.key==='ArrowUp'){ activeIdx = Math.max(0, activeIdx-1); highlight(); e.preventDefault(); }
+        else if(e.key==='Enter'){
+          if(activeIdx>=0 && list.children[activeIdx]){
+            const val = list.children[activeIdx].textContent;
+            input.value = val; close(); e.preventDefault();
+          } else { close(); }
+        } else if(e.key==='Escape'){ close(); }
+      });
+
+      document.addEventListener('click', (e)=>{
+        if(!rootEl.contains(e.target)) close();
+      });
+
+      return {
+        setPlaceholder(rol){ input.placeholder = rol ? `Buscar… (Rol: ${rol})` : 'Buscar…'; },
+        setItems(arr){ items = Array.from(new Set(arr.filter(Boolean))); doFilter(); },
+        disable(flag){ input.disabled = !!flag; if(flag) close(); },
+        clear(){ input.value=''; doFilter(); },
+        value(){ return input.value || ''; }
+      };
     }
+
+    // Instancias de combos (se crean ya, pero se llenan tras fetch)
+    const comboA = makeCombo(document.getElementById('comboA'), []);
+    const comboB = makeCombo(document.getElementById('comboB'), []);
+    const comboC = makeCombo(document.getElementById('comboC'), []);
 
     // Carga inicial de nombres
     let LISTA_NOMBRES = [];
     (async () => {
       try{
-        LISTA_NOMBRES = await loadNamesFromSheet();
-        fillPicker(parteA, LISTA_NOMBRES, null);
-        fillPicker(parteB, LISTA_NOMBRES, null);
-        fillPicker(parteC, LISTA_NOMBRES, null);
+        const r = await fetch(SHEET_CSV_URL, {mode:'cors', cache:'no-store'});
+        let list = [];
+        if(r.ok){
+          const text = await r.text();
+          list = normalizeList(parseCSVFirstColumn(text));
+        } else {
+          throw new Error("CSV HTTP "+r.status);
+        }
+        if(!list.length){
+          // fallback a GVIZ si el CSV vino vacío
+          const r2 = await fetch(GVIZ_URL, {mode:'cors', cache:'no-store'});
+          if(!r2.ok) throw new Error("GVIZ HTTP "+r2.status);
+          const raw = await r2.text();
+          const json = JSON.parse(raw.replace(/^[\s\S]*setResponse\(/,'').replace(/\)\s*;?\s*$/,''));
+          const rows = json.table?.rows ?? [];
+          list = normalizeList(rows.map(x=> (x.c?.[0]?.v ?? "")));
+        }
+        LISTA_NOMBRES = list;
+        // Setea opciones y habilita
+        comboA.setItems(LISTA_NOMBRES); comboA.disable(false);
+        comboB.setItems(LISTA_NOMBRES); comboB.disable(false);
+        comboC.setItems(LISTA_NOMBRES); comboC.disable(true); // C se habilita según contrato
       }catch(err){
         console.error(err);
-        [parteA, parteB, parteC].forEach($el=>{
-          if($el.tagName==="SELECT"){
-            $el.innerHTML = '<option value="" selected disabled>Error al cargar</option>';
-          }else{
-            $el.placeholder = "Error al cargar";
-          }
-          $el.disabled = true;
-        });
+        statusEl.textContent = "Error al cargar nombres desde la hoja.";
+        statusEl.className = "footer-note status-err";
       }
     })();
 
-    // Eventos
+    // Eventos MATERIA/CONTRATO
     selMateria.addEventListener("change", () => {
       selTipo.innerHTML = '<option value="" selected disabled>Selecciona el contrato</option>';
       selTipo.disabled = false;
@@ -532,20 +590,22 @@
       const roles = cto.PARTES || {};
       hintA.textContent = roles.A ? `Rol: ${roles.A}` : "";
       hintB.textContent = roles.B ? `Rol: ${roles.B}` : "";
+      comboA.setPlaceholder(roles.A || null);
+      comboB.setPlaceholder(roles.B || null);
 
-      fillPicker(parteA, LISTA_NOMBRES, roles.A || null);
-      fillPicker(parteB, LISTA_NOMBRES, roles.B || null);
-
+      // Parte C condicional
       if(roles.C){
         grupoC.style.display = "";
         parteC.required = true;
         hintC.textContent = `Rol: ${roles.C}`;
-        fillPicker(parteC, LISTA_NOMBRES, roles.C);
+        comboC.setPlaceholder(roles.C);
+        comboC.disable(false);
       }else{
         grupoC.style.display = "none";
         parteC.required = false;
         parteC.value = "";
         hintC.textContent = "";
+        comboC.disable(true);
       }
 
       renderPlaceholders(cto.PLACEHOLDERS || {});
@@ -556,11 +616,10 @@
       const nombre = selTipo.value;
       return (contratosPorMateria[mat] || []).find(c => c.CONTRATO === nombre);
     }
+
     function resetPartes(){
-      [parteA, parteB, parteC].forEach($el=>{
-        $el.value = "";
-        if($el.tagName === "SELECT"){ $el.selectedIndex = 0; }
-      });
+      ['parteA','parteB','parteC'].forEach(id => { const el = document.getElementById(id); if(el) el.value=""; });
+      comboA.clear(); comboB.clear(); comboC.clear();
       hintA.textContent = ""; hintB.textContent = ""; hintC.textContent = "";
       parteC.required = false; grupoC.style.display = "none";
     }
@@ -642,8 +701,36 @@
       });
     }
 
-    // FECHA antes de enviar
-    document.getElementById("formContratos").addEventListener("submit", setFechaOut);
+    // ===== Validación extra al enviar =====
+    document.getElementById("formContratos").addEventListener("submit", (e)=>{
+      setFechaOut();
+
+      const a = norm(parteA.value.trim());
+      const b = norm(parteB.value.trim());
+      const c = grupoC.style.display === "none" ? "" : norm(parteC.value.trim());
+
+      // Evitar duplicados A/B/C
+      const set = new Set([a,b,c].filter(Boolean));
+      const total = [a,b,c].filter(Boolean).length;
+      if (set.size !== total){
+        e.preventDefault();
+        statusEl.textContent = "Los nombres de las Partes no pueden repetirse.";
+        statusEl.className = "footer-note status-err";
+        return;
+      }
+
+      // (Opcional) Si quieres forzar que venga de la lista:
+      // const inList = v => !v || LISTA_NOMBRES.some(x => norm(x)===norm(v));
+      // if (!inList(parteA.value) || !inList(parteB.value) || (c && !inList(parteC.value))) {
+      //   e.preventDefault();
+      //   statusEl.textContent = "Selecciona nombres válidos de la lista.";
+      //   statusEl.className = "footer-note status-err";
+      //   return;
+      // }
+
+      statusEl.textContent = "Enviando…";
+      statusEl.className = "footer-note";
+    });
   </script>
 </body>
 </html>
